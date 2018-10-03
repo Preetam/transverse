@@ -1,0 +1,20 @@
+---
+- name: create proxy sv directory
+  file: path=/home/ubuntu/sv/proxy state=directory
+
+- name: create proxy vhosts directory
+  file: path=/home/ubuntu/sv/proxy/vhosts state=directory
+
+- name: create service symlink
+  file: src=/home/ubuntu/sv/proxy dest=/home/ubuntu/service/proxy state=link
+
+- name: create proxy sv run file
+  template:
+    src=../templates/proxy_run.j2
+    dest=/home/ubuntu/sv/proxy/run
+    mode="u=rwx,g=rx,o=rx"
+
+- name: copy Caddyfile
+  template: src=../templates/Caddyfile.j2 dest=/home/ubuntu/sv/proxy/Caddyfile
+  notify:
+    - restart caddy

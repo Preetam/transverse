@@ -1,0 +1,6 @@
+---
+- name: restart web
+  command: sv restart /home/ubuntu/service/transverse-web/
+
+- name: restart caddy
+  command: sv restart /home/ubuntu/service/proxy/

@@ -1,0 +1,6 @@
+---
+- name: restart metadata
+  command: sv restart /home/ubuntu/service/transverse-metadata/
+
+- name: restart caddy
+  command: sv restart /home/ubuntu/service/proxy/

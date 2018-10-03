@@ -1,0 +1,26 @@
+---
+- name: create metadata sv directory
+  file: path=/home/ubuntu/sv/transverse-metadata state=directory
+
+- name: create metadata sv log directory
+  file: path=/home/ubuntu/sv/transverse-metadata/log/main state=directory
+
+- name: create metadata sv run file
+  template:
+    src=../templates/transverse-metadata.j2
+    dest=/home/ubuntu/sv/transverse-metadata/run
+    mode="0700"
+
+- name: create metadata sv log run file
+  template:
+    src=../templates/log_run.j2
+    dest=/home/ubuntu/sv/transverse-metadata/log/run
+    mode="0700"
+
+- name: create service symlink
+  file: src=/home/ubuntu/sv/transverse-metadata dest=/home/ubuntu/service/transverse-metadata state=link
+
+- name: copy Caddyfile
+  template: src=../templates/Caddyfile.j2 dest=/home/ubuntu/sv/proxy/vhosts/transverse-metadata
+  notify:
+    - restart caddy

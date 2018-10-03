@@ -1,0 +1,22 @@
+{
+  "name": "transverse",
+  "version": "1.0.0",
+  "description": "Transverse",
+  "scripts": {
+    "test": "ospec",
+    "start": "webpack js/index.js static/js/app.min.js -d --watch",
+    "build": "webpack js/index.js static/js/app.min.js -p"
+  },
+  "keywords": [],
+  "repository": "gitlab.com/Preetam/transverse",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "d3": "^4.10.0",
+    "mithril": "^1.1.3",
+    "moment": "^2.18.1",
+    "papaparse": "^4.3.5"
+  },
+  "devDependencies": {
+    "webpack": "^2.6.1"
+  }
+}

@@ -1,0 +1,12 @@
+---
+- hosts: metadata
+  roles:
+    - metadata
+  tags:
+    - deploy-metadata
+
+- hosts: web
+  roles:
+    - web
+  tags:
+    - deploy-web

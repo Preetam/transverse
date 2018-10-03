@@ -1,0 +1,7 @@
+{{ metadata_caddy_address }} {
+	proxy / {{ metadata_listen_address }} {
+		header_upstream X-Forwarded-For {remote}
+	}
+	header / -Server
+	tls pj@preet.am
+}

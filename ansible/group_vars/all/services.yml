@@ -1,0 +1,7 @@
+metadata_listen_address: "localhost:4000"
+web_listen_address: "localhost:4001"
+
+build_sha: c0ffd663391a4fec7f0e57618a0b0e1dcb95db63
+s3_region: nyc3
+s3_endpoint: "https://nyc3.digitaloceanspaces.com"
+mg_domain: "mg.transverseapp.com"

@@ -1,0 +1,12 @@
+---
+- hosts: caddy
+  roles:
+    - caddy
+
+- hosts: metadata
+  roles:
+    - metadata
+
+- hosts: web
+  roles:
+    - web

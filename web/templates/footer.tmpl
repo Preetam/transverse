@@ -1,0 +1,29 @@
+{{- define "footer" -}}
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">Status: <strong>Under Maintenance</strong>
+        <br />
+        Copyright &copy; 2018 Preetam Jinka.</span>
+        <br/>
+        <a href="/privacy-policy">Privacy policy</a>
+        &middot;
+        <a href="/terms">Terms</a>
+      </div>
+    </footer>
+    </div> <!-- .app-container -->
+
+    {{- if .App -}}
+    <script src="{{ .CDNDomain }}/js/app.min.js?version={{ .CDNVersion }}"></script>
+    <script>
+      var HW_config = {
+        selector: "#hw-widget", // CSS selector where to inject the badge
+        account:  "7goG17"
+      }
+    </script>
+    <script async src="//cdn.headwayapp.co/widget.js"></script>
+    {{- end -}}
+  </body>
+</html>
+
+{{- end -}}

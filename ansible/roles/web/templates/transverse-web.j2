@@ -1,0 +1,14 @@
+#!/bin/sh
+exec /home/ubuntu/bin/transverse-web \
+  -addr={{web_listen_address}} \
+  -metadata-addr="https://{{metadata_caddy_address}}" \
+  -metadata-token={{metadata_token}} \
+  -token-key={{token_key}} \
+  -s3-key={{s3_key}} \
+  -s3-secret={{s3_secret}} \
+  -s3-region={{s3_region}} \
+  -s3-endpoint={{s3_endpoint}} \
+  -mg-domain={{mg_domain}} \
+  -mg-key={{mg_key}} \
+  -recaptcha-key={{recaptcha_key}} \
+  2>&1

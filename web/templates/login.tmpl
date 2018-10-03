@@ -1,0 +1,68 @@
+{{- define "login_new" -}}
+{{- template "header" . -}}
+
+<div class="container main-content">
+  <form class="pure-form pure-form-stacked" method="POST">
+    <fieldset>
+      <h3 class="form-signin-heading">Sign in</h3>
+      <div class="form-group">
+        <label for="login_email">Email address</label>
+        <input type="email" id="login_email" name="login_email" class="form-control" placeholder="Email address" required autofocus>
+      </div>
+      <button class="pure-button" type="submit">Sign in</button>
+      <div>
+        <a href="/login?password=true">Password login</a>
+      </div>
+    <fieldset>
+  </form>
+</div>
+
+{{- template "footer" . -}}
+{{- end -}}
+
+
+{{- define "login_password" -}}
+{{- template "header" . -}}
+
+<div class="container main-content">
+  <form class="pure-form pure-form-stacked" method="POST" action="?password=true">
+    <fieldset>
+      <h3 class="form-signin-heading">Sign in</h3>
+      <div class="form-group">
+        <label for="login_email">Email address</label>
+        <input type="email" id="login_email" name="login_email" class="form-control" placeholder="Email address" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="login_password">Password</label>
+        <input type="password" id="login_password" name="login_password" class="form-control" placeholder="•••••••••••" required>
+      </div>
+      <button class="pure-button" type="submit">Sign in</button>
+    </fieldset>
+  </form>
+</div>
+
+{{- template "footer" . -}}
+{{- end -}}
+
+{{- define "register" -}}
+{{- template "header" . -}}
+
+<div class="container main-content">
+  <form class="pure-form pure-form-stacked" method="POST">
+    <h3 class="form-signin-heading">Register</h3>
+    <div class="form-group">
+      <label for="register_name">Name</label>
+      <input id="register_name" name="register_name" class="form-control" placeholder="Your name" required autofocus>
+    </div>
+    <div class="form-group">
+      <label for="register_email">Email address</label>
+      <input type="email" id="register_email" name="register_email" class="form-control" placeholder="Email address" required>
+    </div>
+    <div class="g-recaptcha" data-sitekey="6LcnCjgUAAAAAFX6gFJG-B59HWu_vy9tJ8t8rG2G"></div>
+    <button class="pure-button" type="submit">Register</button>
+  </form>
+</div>
+
+
+{{- template "footer" . -}}
+{{- end -}}

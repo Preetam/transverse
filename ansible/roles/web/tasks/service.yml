@@ -1,0 +1,26 @@
+---
+- name: create web sv directory
+  file: path=/home/ubuntu/sv/transverse-web state=directory
+
+- name: create web sv log directory
+  file: path=/home/ubuntu/sv/transverse-web/log/main state=directory
+
+- name: create web sv run file
+  template:
+    src=../templates/transverse-web.j2
+    dest=/home/ubuntu/sv/transverse-web/run
+    mode="0700"
+
+- name: create web sv log run file
+  template:
+    src=../templates/log_run.j2
+    dest=/home/ubuntu/sv/transverse-web/log/run
+    mode="0700"
+
+- name: create service symlink
+  file: src=/home/ubuntu/sv/transverse-web dest=/home/ubuntu/service/transverse-web state=link
+
+- name: copy Caddyfile
+  template: src=../templates/Caddyfile.j2 dest=/home/ubuntu/sv/proxy/vhosts/transverse-web
+  notify:
+    - restart caddy

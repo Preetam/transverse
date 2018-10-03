@@ -1,0 +1,9 @@
+{{ web_caddy_address }} {
+	gzip
+	proxy / {{ web_listen_address }} {
+		header_upstream X-Forwarded-For {remote}
+	}
+	header / -Server
+	header /css/fonts +Access-Control-Allow-Origin *
+	tls cert@preet.am
+}

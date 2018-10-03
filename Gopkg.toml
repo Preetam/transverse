@@ -1,0 +1,41 @@
+
+# Gopkg.toml example
+#
+# Refer to https://github.com/golang/dep/blob/master/docs/Gopkg.toml.md
+# for detailed Gopkg.toml documentation.
+#
+# required = ["github.com/user/thing/cmd/thing"]
+# ignored = ["github.com/user/project/pkgX", "bitbucket.org/user/project/pkgA/pkgY"]
+#
+# [[constraint]]
+#   name = "github.com/user/project"
+#   version = "1.0.0"
+#
+# [[constraint]]
+#   name = "github.com/user/project2"
+#   branch = "dev"
+#   source = "github.com/myfork/project2"
+#
+# [[override]]
+#  name = "github.com/x/y"
+#  version = "2.4.0"
+
+[[constraint]]
+  version = "0.0.6"
+  name = "github.com/Preetam/rig"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/Preetam/lm2log"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/Preetam/siesta"
+
+[[constraint]]
+  name = "github.com/aws/aws-sdk-go"
+  revision = "88849eea79e8e48241987b1f0a11a7a0dcbb7716"
+
+[[constraint]]
+  name = "golang.org/x/crypto"
+  revision = "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5"

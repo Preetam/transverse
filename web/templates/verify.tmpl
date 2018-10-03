@@ -1,0 +1,17 @@
+{{- define "verify" -}}
+{{- template "header" . -}}
+
+<div class="container main-content">
+  <p>We just sent you a verification token. Type it into the form below and submit.</p>
+  <form class="pure-form pure-form-stacked" method="POST">
+    <fieldset>
+      <label for="token" class="sr-only">Verification token</label>
+      <input type="number" id="token" name="token" class="form-control" placeholder="token" required autofocus>
+      <input type="hidden" id="action" name="action" class="form-control" value="{{ .action }}">
+      <button class="pure-button" type="submit">Verify</button>
+    </fieldset>
+  </form>
+</div>
+
+{{- template "footer" . -}}
+{{- end -}}

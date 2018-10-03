@@ -1,0 +1,49 @@
+{{- define "header" -}}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{- if .CDNDomain }}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111682615-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-111682615-1');
+    </script>
+    {{- end -}}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ with .Title -}}
+    <title>Transverse - {{ . }}</title>
+    {{- else -}}
+    <title>Transverse</title>
+    {{- end }}
+    <link rel="icon" type="image/png" href="{{ .CDNDomain }}/img/favicon-16.png?version={{ .CDNVersion }}" sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ .CDNDomain }}/img/favicon-32.png?version={{ .CDNVersion }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ .CDNDomain }}/img/favicon-196.png?version={{ .CDNVersion }}" sizes="196x196">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ .CDNDomain }}/img/apple-touch-icon-57x57.png?version={{ .CDNVersion }}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ .CDNDomain }}/img/apple-touch-icon-72x72.png?version={{ .CDNVersion }}">
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ .CDNDomain }}/img/apple-touch-icon-76x76.png?version={{ .CDNVersion }}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ .CDNDomain }}/img/apple-touch-icon-114x114.png?version={{ .CDNVersion }}">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ .CDNDomain }}/img/apple-touch-icon-120x120.png?version={{ .CDNVersion }}">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ .CDNDomain }}/img/apple-touch-icon-144x144.png?version={{ .CDNVersion }}">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ .CDNDomain }}/img/apple-touch-icon-152x152.png?version={{ .CDNVersion }}">
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="{{ .CDNDomain }}/img/apple-touch-icon-180x180.png?version={{ .CDNVersion }}">
+    <link rel="stylesheet" href="{{ .CDNDomain }}/css/fonts/chronica-pro.css?version={{ .CDNVersion }}">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css">
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    <link rel="stylesheet" href="{{ .CDNDomain }}/css/style.min.css?version={{ .CDNVersion }}">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+  <body>
+
+{{- template "messages" . -}}
+  <div class="app-container">
+{{- end -}}

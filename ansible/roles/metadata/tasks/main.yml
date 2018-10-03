@@ -1,0 +1,16 @@
+---
+- name: Setup data directory
+  file:
+    path: "/data/transverse-metadata"
+    owner: ubuntu
+    group: ubuntu
+    state: directory
+  become: yes
+
+- include: service.yml
+  tags:
+    - metadata
+
+- include: deploy.yml
+  tags:
+    - deploy-metadata

@@ -1,0 +1,8 @@
+---
+- stat: path=/usr/local/caddy
+  register: caddy_bin
+
+- include: install_caddy.yml
+  when: caddy_bin.stat.exists == False
+
+- include: service.yml

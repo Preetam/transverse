@@ -1,0 +1,63 @@
+{{- define "index" -}}
+{{- template "header" . -}}
+
+  <div class="app-container">
+    <div class="tv-menu">
+      <div class="tv-menu-top">
+        <h1 class="tv-site-logo"><a href="/">Transverse</a></h1>
+        <div id="tv-dropdown-hamburger" class="tv-hamburger" onclick='toggleMenu()'>
+          <div class="tv-hamburger-bar1"></div>
+          <div class="tv-hamburger-bar2"></div>
+        </div>
+        <div class="tv-menu-items">
+          <ul>
+            <li><a href="/app">App</a></li>
+            <li><a href="/register">Register</a></li>
+          </ul>
+        </div>
+      </div>
+      <div id="tv-dropdown-items">
+        <ul>
+          <li><a href="/app">App</a></li>
+          <li><a href="/register">Register</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container landing align-middle">
+      <h1>Transverse</h1>
+      <p>helps you track your goals.</p>
+
+      <img
+        class="landing-image"
+        src="{{ .CDNDomain }}/img/landing-forecast.png"
+        width=671
+        style="max-width: 100%"
+        />
+    </div>
+
+    <div class="container">
+      <h4 class="tv-landing-section-heading">How it works</h4>
+      <ol>
+        <li>Create a goal</li>
+        <li>Add data</li>
+        <li>Get a forecast</li>
+      </ol>
+    </div>
+
+    <div class="container">
+      <h4 class="tv-landing-section-heading">Status</h4>
+      <p>Transverse is under maintenance for now, so it is disabled. Check back soon.<p>
+    </div>
+
+  </div> <!-- .app-container -->
+
+  <script>
+    function toggleMenu() {
+      console.log("toggleMenu()");
+      document.getElementById("tv-dropdown-items").classList.toggle("active");
+      document.getElementById("tv-dropdown-hamburger").classList.toggle("active");
+    }
+  </script>
+
+{{- template "footer" . -}}
+{{- end -}}

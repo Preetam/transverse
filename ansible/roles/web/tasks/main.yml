@@ -1,0 +1,8 @@
+---
+- include: service.yml
+  tags:
+    - web
+
+- include: deploy.yml
+  tags:
+    - deploy-web

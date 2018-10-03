@@ -1,0 +1,43 @@
+---
+- name: Delete old web binary
+  file: path="/home/ubuntu/bin/transverse-web" state=absent
+  tags:
+    - deploy-web
+
+- name: Download assets
+  s3:
+    bucket: infinitynorm-builds-1
+    object: "transverse_assets_{{ build_sha }}.tar.gz"
+    dest: "/tmp/transverse-assets.tar.gz"
+    mode: get
+    aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+    aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+  tags:
+    - deploy-web
+
+- name: Extract assets
+  unarchive:
+    src: /tmp/transverse-assets.tar.gz
+    dest: /home/ubuntu/service/transverse-web
+    copy: no
+  tags:
+    - deploy-web
+
+- name: Download binary
+  s3:
+    bucket: infinitynorm-builds-1
+    object: "transverse_web_{{ build_sha }}"
+    dest: "/home/ubuntu/bin/transverse-web"
+    mode: get
+    aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+    aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+  tags:
+    - deploy-web
+
+- name: Make binary executable
+  file: dest="/home/ubuntu/bin/transverse-web" mode=a+x
+
+- name: Restart web
+  command: sv restart /home/ubuntu/service/transverse-web/
+  tags:
+    - deploy-web

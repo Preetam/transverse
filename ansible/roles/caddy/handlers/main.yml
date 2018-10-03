@@ -1,0 +1,3 @@
+---
+- name: restart caddy
+  command: sv restart /home/ubuntu/service/proxy/

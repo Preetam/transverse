@@ -1,0 +1,22 @@
+---
+- name: get Caddy
+  s3:
+    bucket: infinitynorm-builds-1
+    object: "caddy.tar.gz"
+    dest: "/tmp/caddy.tar.gz"
+    mode: get
+    aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+    aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+  register: downloaded_caddy
+- name: install Caddy
+  unarchive:
+    src="/tmp/caddy.tar.gz"
+    dest="/usr/local/bin"
+    copy=no
+  when: downloaded_caddy
+  register: installed_caddy
+  become: yes
+- name: allow Caddy to bind to lower ports without superuser priv
+  command: setcap cap_net_bind_service=+ep /usr/local/bin/caddy
+  when: installed_caddy
+  become: yes

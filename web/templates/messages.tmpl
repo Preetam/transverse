@@ -1,0 +1,33 @@
+{{- define "messages" -}}
+{{- if .Info -}}
+<div class="tv-message-bubble-container">
+  <div class='tv-message-bubble tv-info tv-noselect'>
+    <strong class="tv-message-bubble-level">Info: </strong>{{- .Info -}}
+  </div>
+</div>
+{{- end -}}
+
+{{- if .Success -}}
+<div class="tv-message-bubble-container">
+  <div class='tv-message-bubble tv-success tv-noselect'>
+    <strong class="tv-message-bubble-level">Success: </strong>{{- .Success -}}
+  </div>
+</div>
+{{- end -}}
+
+{{- if .Warning -}}
+<div class="tv-message-bubble-container">
+  <div class='tv-message-bubble tv-warning tv-noselect'>
+    <strong class="tv-message-bubble-level">Warning: </strong>{{- .Warning -}}
+  </div>
+</div>
+{{- end -}}
+
+{{- if .Error -}}
+<div class="tv-message-bubble-container">
+  <div class='tv-message-bubble tv-error tv-noselect'>
+    <strong class="tv-message-bubble-level">Error: </strong>{{- .Error -}}
+  </div>
+</div>
+{{- end -}}
+{{- end -}}
