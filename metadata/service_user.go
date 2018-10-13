@@ -24,8 +24,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Preetam/transverse
-	"github.com/Preetam/transverse
+	"github.com/Preetam/lm2"
+	"github.com/Preetam/siesta"
 	"github.com/Preetam/transverse/metadata/client"
 	"github.com/Preetam/transverse/metadata/middleware"
 )

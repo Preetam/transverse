@@ -48,7 +48,7 @@ func (c *ServiceClient) CreateGoal(goal Goal) error {
 		return err
 	}
 
-	payload := rig.NewLogPayload(0, rig.NewOperation(OpGoalCreate, marshaled))
+	payload := rig.Operation{Method: OpGoalCreate, Data: marshaled}
 	err = c.client.doRequest("POST", "/do?ignore-version=true", &payload, nil)
 	if err != nil {
 		return err
@@ -63,7 +63,7 @@ func (c *ServiceClient) UpdateGoal(goal Goal) error {
 		return err
 	}
 
-	payload := rig.NewLogPayload(0, rig.NewOperation(OpGoalUpdate, marshaled))
+	payload := rig.Operation{Method: OpGoalUpdate, Data: marshaled}
 	err = c.client.doRequest("POST", "/do?ignore-version=true", &payload, nil)
 	if err != nil {
 		return err

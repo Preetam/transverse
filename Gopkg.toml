@@ -21,8 +21,8 @@
 #  version = "2.4.0"
 
 [[constraint]]
-  version = "0.0.6"
   name = "github.com/Preetam/rig"
+  branch = "cloud-native"
 
 [[constraint]]
   branch = "master"
@@ -34,7 +34,7 @@
 
 [[constraint]]
   name = "github.com/aws/aws-sdk-go"
-  revision = "88849eea79e8e48241987b1f0a11a7a0dcbb7716"
+  version = "^1.15.54"
 
 [[constraint]]
   name = "golang.org/x/crypto"

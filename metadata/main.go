@@ -21,6 +21,7 @@ package main
 import (
 	"flag"
 	"net/http"
+	"time"
 
 	"github.com/Preetam/lm2"
 	"github.com/Preetam/rig"
@@ -36,8 +37,6 @@ func main() {
 
 	listenAddr := flag.String("listen", "localhost:4000", "Listen address")
 	dataDir := flag.String("data-dir", "/tmp/data", "Data directory")
-	applyCommits := flag.Bool("apply-commits", true, "Apply log commits")
-	peer := flag.String("peer", "", "Peer log base URI")
 	flag.StringVar(&middleware.Token, "token", middleware.Token, "Auth token")
 	flag.Parse()
 
@@ -53,14 +52,34 @@ func main() {
 		}
 	}
 
-	r, err := rig.New(*dataDir, MetadataService, *applyCommits, middleware.Token, *peer)
+	riggedService, err := rig.NewRiggedService(MetadataService, rig.NewFileObjectStore(*dataDir), "rig")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	http.Handle("/log/", r.LogHandler())
+	MetadataService.riggedService = riggedService
+
 	http.Handle("/", MetadataService.Service())
-	http.Handle("/do", r.DoHandler())
 	log.Println("metadata starting...")
+
+	err = riggedService.Recover()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(riggedService)
+
+	go func() {
+		snapshotTimer := time.Tick(time.Minute)
+		flushTimer := time.Tick(time.Second)
+		for {
+			select {
+			case <-snapshotTimer:
+				riggedService.Snapshot()
+			case <-flushTimer:
+				riggedService.Flush()
+			}
+		}
+	}()
+
 	http.ListenAndServe(*listenAddr, nil)
 }
