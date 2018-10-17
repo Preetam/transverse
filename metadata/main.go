@@ -90,17 +90,21 @@ func main() {
 		for {
 			select {
 			case <-snapshotTimer:
+				start := time.Now()
 				err := riggedService.Snapshot()
 				if err != nil {
 					log.Warnln("error snapshotting:", err)
 				} else {
-					log.Infoln("successfully snapshotted version", riggedService.SnapshotVersion())
+					log.WithField("latency", time.Now().Sub(start).Seconds()).
+						Infoln("successfully snapshotted version", riggedService.SnapshotVersion())
 				}
 			case <-flushTimer:
+				start := time.Now()
 				err := riggedService.Flush()
 				if err != nil {
 					log.Warnln("error flushing:", err)
 				}
+				log.WithField("latency", time.Now().Sub(start).Seconds()).Info("Completed flush")
 			}
 		}
 	}()
