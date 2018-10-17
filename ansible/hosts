@@ -1,14 +1,11 @@
 [digitalocean]
 apps1.infinitynorm.com
-#apps2.infinitynorm.com
 
 [caddy]
 apps1.infinitynorm.com
-#apps2.infinitynorm.com
 
 [metadata]
 apps1.infinitynorm.com
-#apps2.infinitynorm.com
 
 [web]
 apps1.infinitynorm.com

@@ -66,7 +66,23 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(riggedService)
+	if riggedService.SnapshotVersion() == 0 {
+		// Don't have a previous snapshot, so take one now.
+		if localVersion, err := MetadataService.Version(); err == nil {
+			if localVersion > 0 {
+				err = riggedService.Snapshot()
+				if err != nil {
+					log.Fatalln("error creating initial snapshot:", err)
+				} else {
+					log.Infoln("created initial snapshot", riggedService.SnapshotVersion())
+				}
+			}
+		} else {
+			log.Fatal(err)
+		}
+	} else {
+		log.Infoln("Recovered version", riggedService.SnapshotVersion())
+	}
 
 	go func() {
 		snapshotTimer := time.Tick(time.Minute)
@@ -74,9 +90,17 @@ func main() {
 		for {
 			select {
 			case <-snapshotTimer:
-				riggedService.Snapshot()
+				err := riggedService.Snapshot()
+				if err != nil {
+					log.Warnln("error snapshotting:", err)
+				} else {
+					log.Infoln("successfully snapshotted version", riggedService.SnapshotVersion())
+				}
 			case <-flushTimer:
-				riggedService.Flush()
+				err := riggedService.Flush()
+				if err != nil {
+					log.Warnln("error flushing:", err)
+				}
 			}
 		}
 	}()
