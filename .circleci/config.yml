@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: preetamjinka/ci:golang-2018-02
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    steps:
+      - checkout
+      - run: go test ./...
+      - run: cd web && npm i && npm test && cd ..
+      - run: cd metadata && go build && cd ..
+      - run: cd web && go build && cd ..
+      - run: cd web && make all && npm run build && tar czvf assets.tar.gz static templates && cd ..
+      - run: python s3_upload.py infinitynorm-builds-1 ./metadata/metadata "transverse_metadata_${CIRCLE_SHA1}"
+      - run: python s3_upload.py infinitynorm-builds-1 ./web/web "transverse_web_${CIRCLE_SHA1}"
+      - run: python s3_upload.py infinitynorm-builds-1 ./web/assets.tar.gz "transverse_assets_${CIRCLE_SHA1}.tar.gz"
