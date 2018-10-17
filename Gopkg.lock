@@ -11,11 +11,11 @@
 
 [[projects]]
   branch = "cloud-native"
-  digest = "1:0d2f00905ce0eec2d3877acf4dec9e734d714818fe4e9580acd7d0f8ae2167ab"
+  digest = "1:712d85585bcd0fef9f52a9a008a4fe40077c4921eac541f52461f6e1151375a1"
   name = "github.com/Preetam/rig"
   packages = ["."]
   pruneopts = "UT"
-  revision = "530d7ab8d904cc92635a86304ad18cade100aa3e"
+  revision = "5a44a98041779e034e021656f887ea7aa44ee595"
 
 [[projects]]
   digest = "1:76cfd7ad2a10f5fe437f41657b04ee03f29c7320092f24dab57d641d02c6d446"

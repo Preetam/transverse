@@ -232,6 +232,9 @@ func (rs *RiggedService) Snapshot() error {
 		return err
 	}
 	rs.lastSnapshot = snapshotVersion
+	if rs.currentVersion < snapshotVersion {
+		rs.currentVersion = snapshotVersion
+	}
 	return nil
 }
 
