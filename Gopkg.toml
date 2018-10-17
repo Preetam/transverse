@@ -26,10 +26,6 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/Preetam/lm2log"
-
-[[constraint]]
-  branch = "master"
   name = "github.com/Preetam/siesta"
 
 [[constraint]]
