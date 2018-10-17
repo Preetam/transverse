@@ -235,6 +235,10 @@ func (rs *RiggedService) Snapshot() error {
 	return nil
 }
 
+func (rs *RiggedService) SnapshotVersion() uint64 {
+	return atomic.LoadUint64(&rs.lastSnapshot)
+}
+
 func (rs *RiggedService) getSnapshotName(snapshot uint64) string {
 	return filepath.Join(rs.prefix, "SNAPSHOT", fmt.Sprintf("%016x", snapshot))
 }

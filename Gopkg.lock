@@ -2,39 +2,39 @@
 
 
 [[projects]]
-  digest = "1:62fb45eeb4112b4d3b6bee5a1bf88541b29a0ad2ef941fdb33a43bdf3fc34d24"
+  digest = "1:c163d5c390681a075a6ecf035dcd07bdd8c4979b9337166a671beb2f6df4bcc4"
   name = "github.com/Preetam/lm2"
   packages = ["."]
-  pruneopts = ""
-  revision = "9b26c2078c1d1ed0131fc77c3f8e8f4b0c0d121e"
-  version = "v2.2.5"
+  pruneopts = "UT"
+  revision = "a5532a89435db34eb492442b625fbb716b12ab07"
+  version = "v2.2.6"
 
 [[projects]]
   branch = "cloud-native"
-  digest = "1:5b07fd28ff97d94d37bfdd50b6e3da3b1d889c903bfd925f5b3d27f637f6a8b2"
+  digest = "1:0d2f00905ce0eec2d3877acf4dec9e734d714818fe4e9580acd7d0f8ae2167ab"
   name = "github.com/Preetam/rig"
   packages = ["."]
-  pruneopts = ""
-  revision = "e1973433badc3b7e12d27357c97ddce82877434b"
+  pruneopts = "UT"
+  revision = "530d7ab8d904cc92635a86304ad18cade100aa3e"
 
 [[projects]]
-  branch = "master"
-  digest = "1:4104aa50e13bd07f4be046ae11cc173fd08653098fd87bb585b35f0586b8557a"
+  digest = "1:76cfd7ad2a10f5fe437f41657b04ee03f29c7320092f24dab57d641d02c6d446"
   name = "github.com/Preetam/siesta"
   packages = ["."]
-  pruneopts = ""
+  pruneopts = "UT"
   revision = "d3bb1906d7bfe7f00a7399b58de98ac2942e5b7a"
+  version = "v1.0.0"
 
 [[projects]]
-  digest = "1:3fcbf733a8d810a21265a7f2fe08a3353db2407da052b233f8b204b5afc03d9b"
+  digest = "1:3f53e9e4dfbb664cd62940c9c4b65a2171c66acd0b7621a1a6b8e78513525a52"
   name = "github.com/Sirupsen/logrus"
   packages = ["."]
-  pruneopts = ""
-  revision = "3e01752db0189b9157070a0e1668a620f9a85da2"
-  version = "v1.0.6"
+  pruneopts = "UT"
+  revision = "ad15b42461921f1fb3529b058c6786c6a45d5162"
+  version = "v1.1.1"
 
 [[projects]]
-  digest = "1:996727880e06dcf037f712c4d046e241d1b1b01844636fefb0fbaa480cfd230e"
+  digest = "1:521cfc21291aef9e7a68d37cea41f77ecc26fd381c1b1541a7444623e7cda37e"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -70,62 +70,71 @@
     "service/s3",
     "service/sts",
   ]
-  pruneopts = ""
-  revision = "bf8067ceb6e7f51e150c218972dccfeeed892b85"
-  version = "v1.15.54"
+  pruneopts = "UT"
+  revision = "c35fe9d06b9f0cefe538ecdb7501c84603119dfb"
+  version = "v1.15.56"
 
 [[projects]]
-  digest = "1:cd5bab9c9e23ffa6858eaa79dc827fd84bc24bc00b0cfb0b14036e393da2b1fa"
+  digest = "1:15e27372d379b45b18ac917b9dafc45c45485239490ece18cca97a12f9591146"
   name = "github.com/go-ini/ini"
   packages = ["."]
-  pruneopts = ""
-  revision = "5cf292cae48347c2490ac1a58fe36735fb78df7e"
-  version = "v1.38.2"
+  pruneopts = "UT"
+  revision = "9c8236e659b76e87bf02044d06fde8683008ff3e"
+  version = "v1.39.0"
 
 [[projects]]
-  digest = "1:6f49eae0c1e5dab1dafafee34b207aeb7a42303105960944828c2079b92fc88e"
+  digest = "1:e22af8c7518e1eab6f2eab2b7d7558927f816262586cd6ed9f349c97a6c285c4"
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
-  pruneopts = ""
+  pruneopts = "UT"
   revision = "0b12d6b5"
 
 [[projects]]
-  digest = "1:7365acd48986e205ccb8652cc746f09c8b7876030d53710ea6ef7d0bd0dcd7ca"
+  digest = "1:0a69a1c0db3591fcefb47f115b224592c8dfa4368b7ba9fae509d5e16cdc95c8"
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242"
+  version = "v1.0.1"
+
+[[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
-  pruneopts = ""
+  pruneopts = "UT"
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
-  digest = "1:e10c88bfaf62d55e2f19df1de09c322531079fb17d105d3dcb4bd6153e30139a"
+  branch = "master"
+  digest = "1:001a4e7a40e50ff2ef32e2556bca50c4f77daa457db3ac6afc8bea9bb2122cfb"
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
     "blowfish",
     "ssh/terminal",
   ]
-  pruneopts = ""
-  revision = "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5"
+  pruneopts = "UT"
+  revision = "0c41d7ab0a0ee717d4590a44bcb987dfd9e183eb"
 
 [[projects]]
   branch = "master"
-  digest = "1:ed900376500543ca05f2a2383e1f541b4606f19cd22f34acb81b17a0b90c7f3e"
+  digest = "1:f5aa274a0377f85735edc7fedfb0811d3cbc20af91633797cb359e29c3272271"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
-  pruneopts = ""
-  revision = "d0be0721c37eeb5299f245a996a483160fc36940"
+  pruneopts = "UT"
+  revision = "fa43e7bc11baaae89f3f902b2b4d832b68234844"
 
 [[projects]]
-  digest = "1:91fea695ea6dfbb356a9cfd888739a702e3d6e779219d4d80aa0d95f23f24074"
+  digest = "1:6ad77325212e02cc2c76bc974fcfb59a227018afddbd3bc78ea3cc53dadb2554"
   name = "gopkg.in/mailgun/mailgun-go.v1"
   packages = ["."]
-  pruneopts = ""
-  revision = "a4002e2df2e8ca2da6a6fbb4a72871b504e49f50"
-  version = "v1.1.0"
+  pruneopts = "UT"
+  revision = "28c45085c063854b83107df6cf37ad8f88462105"
+  version = "v1.1.1"
 
 [solve-meta]
   analyzer-name = "dep"

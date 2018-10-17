@@ -1,7 +1,6 @@
-
 # Gopkg.toml example
 #
-# Refer to https://github.com/golang/dep/blob/master/docs/Gopkg.toml.md
+# Refer to https://golang.github.io/dep/docs/Gopkg.toml.html
 # for detailed Gopkg.toml documentation.
 #
 # required = ["github.com/user/thing/cmd/thing"]
@@ -17,21 +16,43 @@
 #   source = "github.com/myfork/project2"
 #
 # [[override]]
-#  name = "github.com/x/y"
-#  version = "2.4.0"
+#   name = "github.com/x/y"
+#   version = "2.4.0"
+#
+# [prune]
+#   non-go = false
+#   go-tests = true
+#   unused-packages = true
+
+
+[[constraint]]
+  name = "github.com/Preetam/lm2"
+  version = "2.2.6"
 
 [[constraint]]
   name = "github.com/Preetam/rig"
   branch = "cloud-native"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/Preetam/siesta"
+  version = "1.0.0"
+
+[[constraint]]
+  name = "github.com/Sirupsen/logrus"
+  version = "1.1.1"
 
 [[constraint]]
   name = "github.com/aws/aws-sdk-go"
-  version = "^1.15.54"
+  version = "1.15.56"
 
 [[constraint]]
+  branch = "master"
   name = "golang.org/x/crypto"
-  revision = "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5"
+
+[[constraint]]
+  name = "gopkg.in/mailgun/mailgun-go.v1"
+  version = "1.1.1"
+
+[prune]
+  go-tests = true
+  unused-packages = true
