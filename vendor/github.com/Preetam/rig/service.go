@@ -50,10 +50,15 @@ func NewRiggedService(service Service, objectStore ObjectStore, prefix string) (
 			return nil, err
 		}
 	}
+	currentVersion, err := service.Version()
+	if err != nil {
+		return nil, err
+	}
 	return &RiggedService{
-		service:     service,
-		objectStore: objectStore,
-		prefix:      prefix,
+		service:        service,
+		objectStore:    objectStore,
+		prefix:         prefix,
+		currentVersion: currentVersion,
 	}, nil
 }
 
@@ -235,6 +240,11 @@ func (rs *RiggedService) Snapshot() error {
 	if rs.currentVersion < snapshotVersion {
 		rs.currentVersion = snapshotVersion
 	}
+	// We won't have any pending records anymore.
+	// TODO: keep all records since the last snapshot so we can
+	// support point-in-time recovery.
+	rs.pending = rs.pending[:0]
+	rs.lastFlush = snapshotVersion
 	return nil
 }
 
