@@ -27,6 +27,10 @@ import (
 	"github.com/Preetam/rig"
 	"github.com/Preetam/transverse/metadata/middleware"
 	log "github.com/Sirupsen/logrus"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 )
 
 var buildStr = "[DEV]"
@@ -37,9 +41,14 @@ func main() {
 
 	listenAddr := flag.String("listen", "localhost:4000", "Listen address")
 	dataDir := flag.String("data-dir", "/tmp/data", "Data directory")
+	s3Key := flag.String("s3-key", "", "S3 access key")
+	s3Secret := flag.String("s3-secret", "", "S3 secret access key")
+	s3Region := flag.String("s3-region", "nyc3", "S3 region")
+	s3Endpoint := flag.String("s3-endpoint", "https://nyc3.digitaloceanspaces.com", "S3 endpoint")
 	flag.StringVar(&middleware.Token, "token", middleware.Token, "Auth token")
 	flag.Parse()
 
+	s3Service := s3.New(session.New(aws.NewConfig().WithRegion(*s3Region).WithEndpoint(*s3Endpoint).WithCredentials(credentials.NewStaticCredentials(*s3Key, *s3Secret, ""))))
 	MetadataService, err := OpenMetadataService(*dataDir)
 	if err != nil {
 		if err == lm2.ErrDoesNotExist {
@@ -52,7 +61,13 @@ func main() {
 		}
 	}
 
-	riggedService, err := rig.NewRiggedService(MetadataService, rig.NewFileObjectStore(*dataDir), "rig")
+	var objectStore rig.ObjectStore
+	if *s3Key == "" {
+		objectStore = rig.NewFileObjectStore(*dataDir)
+	} else {
+		objectStore = rig.NewS3ObjectStore(s3Service, "transverse-rig")
+	}
+	riggedService, err := rig.NewRiggedService(MetadataService, objectStore, "rig")
 	if err != nil {
 		log.Fatal(err)
 	}

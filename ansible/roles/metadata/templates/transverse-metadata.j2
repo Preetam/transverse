@@ -3,4 +3,8 @@ exec /home/ubuntu/bin/transverse-metadata \
   -data-dir=/data/transverse-metadata \
   -listen=localhost:4000 \
   -token={{metadata_token}} \
+  -s3-key={{s3_key}} \
+  -s3-secret={{s3_secret}} \
+  -s3-region={{s3_region}} \
+  -s3-endpoint={{s3_endpoint}} \
   2>&1
