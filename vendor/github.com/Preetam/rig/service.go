@@ -174,14 +174,14 @@ func (rs *RiggedService) Apply(op Operation, waitUntilDurable bool) error {
 	// Unreachable
 }
 
-func (rs *RiggedService) Flush() error {
+func (rs *RiggedService) Flush() (int, error) {
 	rs.lock.Lock()
 	defer rs.lock.Unlock()
 
 	numRecords := len(rs.pending)
 	if numRecords == 0 {
 		// Nothing to do
-		return nil
+		return 0, nil
 	}
 
 	batchVersion := rs.lastFlush + 1
@@ -190,17 +190,17 @@ func (rs *RiggedService) Flush() error {
 	w := gzip.NewWriter(buf)
 	err := json.NewEncoder(w).Encode(rs.pending)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	w.Flush()
 	w.Close()
 	err = rs.objectStore.PutObject(rs.getLogRecordName(batchVersion), bytes.NewReader(buf.Bytes()), int64(buf.Len()))
 	if err != nil {
-		return err
+		return 0, err
 	}
 	rs.pending = rs.pending[:0]
 	rs.lastFlush = batchVersion + uint64(numRecords) - 1
-	return nil
+	return numRecords, nil
 }
 
 func (rs *RiggedService) Snapshot() error {

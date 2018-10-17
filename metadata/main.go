@@ -100,11 +100,14 @@ func main() {
 				}
 			case <-flushTimer:
 				start := time.Now()
-				err := riggedService.Flush()
+				flushedCount, err := riggedService.Flush()
 				if err != nil {
 					log.Warnln("error flushing:", err)
+				} else if flushedCount > 0 {
+					log.WithField("num_records", flushedCount).
+						WithField("latency", time.Now().Sub(start).Seconds()).
+						Info("Completed flush")
 				}
-				log.WithField("latency", time.Now().Sub(start).Seconds()).Info("Completed flush")
 			}
 		}
 	}()
