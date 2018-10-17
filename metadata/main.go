@@ -100,7 +100,7 @@ func main() {
 	}
 
 	go func() {
-		snapshotTimer := time.Tick(time.Minute)
+		snapshotTimer := time.Tick(time.Hour)
 		flushTimer := time.Tick(time.Second)
 		for {
 			select {

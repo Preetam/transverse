@@ -219,7 +219,7 @@ func (s *MetadataService) Service() *siesta.Service {
 			return
 		}
 
-		err = s.riggedService.Apply(doPayload, false)
+		err = s.riggedService.Apply(doPayload, true)
 		if err != nil {
 			requestData.ResponseError = err.Error()
 			requestData.StatusCode = http.StatusInternalServerError
