@@ -27,6 +27,8 @@ type simpleModel struct {
 	trend float64
 
 	errorScore float64
+
+	lastPoint float64
 }
 
 func newSimpleModel(alpha, beta float64) *simpleModel {
@@ -56,11 +58,13 @@ func (m *simpleModel) AddPoint(point float64) {
 
 	m.level = newLevel
 	m.trend = newTrend
+
+	m.lastPoint = point
 }
 
 // Forecast returns an n-step-ahead forecast for a double exponential smoothing model.
 func (m *simpleModel) Forecast(steps int) float64 {
-	return m.level + float64(steps)*m.trend
+	return m.lastPoint + float64(steps)*m.trend
 }
 
 // SquareError returns the EWMA square error for the model.
