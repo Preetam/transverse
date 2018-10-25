@@ -50,7 +50,7 @@ func (c *ServiceClient) CreateUser(user User) error {
 		return err
 	}
 
-	payload := rig.NewLogPayload(0, rig.NewOperation(OpUserCreate, marshaled))
+	payload := rig.Operation{Method: OpUserCreate, Data: marshaled}
 	err = c.client.doRequest("POST", "/do?ignore-version=true", &payload, nil)
 	if err != nil {
 		return err
@@ -65,7 +65,7 @@ func (c *ServiceClient) UpdateUser(user User) error {
 		return err
 	}
 
-	payload := rig.NewLogPayload(0, rig.NewOperation(OpUserUpdate, marshaled))
+	payload := rig.Operation{Method: OpUserUpdate, Data: marshaled}
 	err = c.client.doRequest("POST", "/do?ignore-version=true", &payload, nil)
 	if err != nil {
 		return err
@@ -79,8 +79,7 @@ func (c *ServiceClient) DeleteUser(user User) error {
 	if err != nil {
 		return err
 	}
-
-	payload := rig.NewLogPayload(0, rig.NewOperation(OpUserDelete, marshaled))
+	payload := rig.Operation{Method: OpUserDelete, Data: marshaled}
 	err = c.client.doRequest("POST", "/do?ignore-version=true", &payload, nil)
 	if err != nil {
 		return err

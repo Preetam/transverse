@@ -21,11 +21,16 @@ package main
 import (
 	"flag"
 	"net/http"
+	"time"
 
 	"github.com/Preetam/lm2"
 	"github.com/Preetam/rig"
 	"github.com/Preetam/transverse/metadata/middleware"
 	log "github.com/Sirupsen/logrus"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 )
 
 var buildStr = "[DEV]"
@@ -36,11 +41,14 @@ func main() {
 
 	listenAddr := flag.String("listen", "localhost:4000", "Listen address")
 	dataDir := flag.String("data-dir", "/tmp/data", "Data directory")
-	applyCommits := flag.Bool("apply-commits", true, "Apply log commits")
-	peer := flag.String("peer", "", "Peer log base URI")
+	s3Key := flag.String("s3-key", "", "S3 access key")
+	s3Secret := flag.String("s3-secret", "", "S3 secret access key")
+	s3Region := flag.String("s3-region", "nyc3", "S3 region")
+	s3Endpoint := flag.String("s3-endpoint", "https://nyc3.digitaloceanspaces.com", "S3 endpoint")
 	flag.StringVar(&middleware.Token, "token", middleware.Token, "Auth token")
 	flag.Parse()
 
+	s3Service := s3.New(session.New(aws.NewConfig().WithRegion(*s3Region).WithEndpoint(*s3Endpoint).WithCredentials(credentials.NewStaticCredentials(*s3Key, *s3Secret, ""))))
 	MetadataService, err := OpenMetadataService(*dataDir)
 	if err != nil {
 		if err == lm2.ErrDoesNotExist {
@@ -53,14 +61,71 @@ func main() {
 		}
 	}
 
-	r, err := rig.New(*dataDir, MetadataService, *applyCommits, middleware.Token, *peer)
+	var objectStore rig.ObjectStore
+	if *s3Key == "" {
+		objectStore = rig.NewFileObjectStore(*dataDir)
+	} else {
+		objectStore = rig.NewS3ObjectStore(s3Service, "transverse-rig")
+	}
+	riggedService, err := rig.NewRiggedService(MetadataService, objectStore, "rig")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	http.Handle("/log/", r.LogHandler())
+	MetadataService.riggedService = riggedService
+
 	http.Handle("/", MetadataService.Service())
-	http.Handle("/do", r.DoHandler())
 	log.Println("metadata starting...")
+
+	err = riggedService.Recover()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if riggedService.SnapshotVersion() == 0 {
+		// Don't have a previous snapshot, so take one now.
+		if localVersion, err := MetadataService.Version(); err == nil {
+			if localVersion > 0 {
+				err = riggedService.Snapshot()
+				if err != nil {
+					log.Fatalln("error creating initial snapshot:", err)
+				} else {
+					log.Infoln("created initial snapshot", riggedService.SnapshotVersion())
+				}
+			}
+		} else {
+			log.Fatal(err)
+		}
+	} else {
+		log.Infoln("Recovered version", riggedService.SnapshotVersion())
+	}
+
+	go func() {
+		snapshotTimer := time.Tick(time.Hour)
+		flushTimer := time.Tick(time.Second)
+		for {
+			select {
+			case <-snapshotTimer:
+				start := time.Now()
+				err := riggedService.Snapshot()
+				if err != nil {
+					log.Warnln("error snapshotting:", err)
+				} else {
+					log.WithField("latency", time.Now().Sub(start).Seconds()).
+						Infoln("successfully snapshotted version", riggedService.SnapshotVersion())
+				}
+			case <-flushTimer:
+				start := time.Now()
+				flushedCount, err := riggedService.Flush()
+				if err != nil {
+					log.Warnln("error flushing:", err)
+				} else if flushedCount > 0 {
+					log.WithField("num_records", flushedCount).
+						WithField("latency", time.Now().Sub(start).Seconds()).
+						Info("Completed flush")
+				}
+			}
+		}
+	}()
+
 	http.ListenAndServe(*listenAddr, nil)
 }

@@ -2,36 +2,39 @@
 
 
 [[projects]]
+  digest = "1:c163d5c390681a075a6ecf035dcd07bdd8c4979b9337166a671beb2f6df4bcc4"
   name = "github.com/Preetam/lm2"
   packages = ["."]
-  revision = "9b26c2078c1d1ed0131fc77c3f8e8f4b0c0d121e"
-  version = "v2.2.5"
+  pruneopts = "UT"
+  revision = "a5532a89435db34eb492442b625fbb716b12ab07"
+  version = "v2.2.6"
 
 [[projects]]
-  name = "github.com/Preetam/lm2log"
-  packages = ["."]
-  revision = "5df40bd096b36fcb73b3fa6b4d7afb774d7e4da6"
-  version = "v1.1.1"
-
-[[projects]]
+  digest = "1:1fe75ceeca0d0674ecf87d51b5f09c8a737e6255b322c0a4dde3f1ca640875eb"
   name = "github.com/Preetam/rig"
   packages = ["."]
-  revision = "ab7c86dc4e28f1d4655d0d726016db73374f8a76"
-  version = "v0.0.9"
+  pruneopts = "UT"
+  revision = "b25c2abe755fe79c79b6592830fcd0a3df4569b1"
+  version = "v0.2.0"
 
 [[projects]]
+  digest = "1:76cfd7ad2a10f5fe437f41657b04ee03f29c7320092f24dab57d641d02c6d446"
   name = "github.com/Preetam/siesta"
   packages = ["."]
+  pruneopts = "UT"
   revision = "d3bb1906d7bfe7f00a7399b58de98ac2942e5b7a"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:3f53e9e4dfbb664cd62940c9c4b65a2171c66acd0b7621a1a6b8e78513525a52"
   name = "github.com/Sirupsen/logrus"
   packages = ["."]
-  revision = "3e01752db0189b9157070a0e1668a620f9a85da2"
-  version = "v1.0.6"
+  pruneopts = "UT"
+  revision = "ad15b42461921f1fb3529b058c6786c6a45d5162"
+  version = "v1.1.1"
 
 [[projects]]
+  digest = "1:f9135c94393e30a657b9e0dfbac0c037d25226ee0183fa20119ea5144ef3122f"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -44,69 +47,103 @@
     "aws/credentials/ec2rolecreds",
     "aws/credentials/endpointcreds",
     "aws/credentials/stscreds",
+    "aws/csm",
     "aws/defaults",
     "aws/ec2metadata",
     "aws/endpoints",
     "aws/request",
     "aws/session",
     "aws/signer/v4",
+    "internal/ini",
+    "internal/s3err",
+    "internal/sdkio",
+    "internal/sdkrand",
+    "internal/sdkuri",
     "internal/shareddefaults",
     "private/protocol",
+    "private/protocol/eventstream",
+    "private/protocol/eventstream/eventstreamapi",
     "private/protocol/query",
     "private/protocol/query/queryutil",
     "private/protocol/rest",
     "private/protocol/restxml",
     "private/protocol/xml/xmlutil",
     "service/s3",
-    "service/sts"
+    "service/sts",
   ]
-  revision = "88849eea79e8e48241987b1f0a11a7a0dcbb7716"
+  pruneopts = "UT"
+  revision = "c446a547f59665b7ce54ac57bd8f8b04e5179563"
+  version = "v1.15.62"
 
 [[projects]]
-  name = "github.com/go-ini/ini"
-  packages = ["."]
-  revision = "5cf292cae48347c2490ac1a58fe36735fb78df7e"
-  version = "v1.38.2"
-
-[[projects]]
+  digest = "1:e22af8c7518e1eab6f2eab2b7d7558927f816262586cd6ed9f349c97a6c285c4"
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
-  revision = "3433f3ea46d9f8019119e7dd41274e112a2359a9"
-  version = "0.2.2"
+  pruneopts = "UT"
+  revision = "0b12d6b5"
 
 [[projects]]
+  digest = "1:0a69a1c0db3591fcefb47f115b224592c8dfa4368b7ba9fae509d5e16cdc95c8"
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242"
+  version = "v1.0.1"
+
+[[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:001a4e7a40e50ff2ef32e2556bca50c4f77daa457db3ac6afc8bea9bb2122cfb"
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
     "blowfish",
-    "ssh/terminal"
+    "ssh/terminal",
   ]
-  revision = "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5"
+  pruneopts = "UT"
+  revision = "74cb1d3d52f4c01cbfb44c1b50d204462f3124c7"
 
 [[projects]]
   branch = "master"
+  digest = "1:b9c7e858b8e2f3e6a53a561a1f032fa38c91c626e1f3b7e42e08505af95a02a9"
   name = "golang.org/x/sys"
   packages = [
     "unix",
-    "windows"
+    "windows",
   ]
-  revision = "d0be0721c37eeb5299f245a996a483160fc36940"
+  pruneopts = "UT"
+  revision = "5cd93ef61a7c8f0f858690154eb6de2e69415fa1"
 
 [[projects]]
+  digest = "1:6ad77325212e02cc2c76bc974fcfb59a227018afddbd3bc78ea3cc53dadb2554"
   name = "gopkg.in/mailgun/mailgun-go.v1"
   packages = ["."]
-  revision = "a4002e2df2e8ca2da6a6fbb4a72871b504e49f50"
-  version = "v1.1.0"
+  pruneopts = "UT"
+  revision = "28c45085c063854b83107df6cf37ad8f88462105"
+  version = "v1.1.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b0f2d896679a6855a24d9960336de0789a280f498b34da28d7f4fb2aabc225ae"
+  input-imports = [
+    "github.com/Preetam/lm2",
+    "github.com/Preetam/rig",
+    "github.com/Preetam/siesta",
+    "github.com/Sirupsen/logrus",
+    "github.com/aws/aws-sdk-go/aws",
+    "github.com/aws/aws-sdk-go/aws/awserr",
+    "github.com/aws/aws-sdk-go/aws/credentials",
+    "github.com/aws/aws-sdk-go/aws/session",
+    "github.com/aws/aws-sdk-go/service/s3",
+    "golang.org/x/crypto/bcrypt",
+    "gopkg.in/mailgun/mailgun-go.v1",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

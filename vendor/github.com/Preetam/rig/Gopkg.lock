@@ -2,26 +2,57 @@
 
 
 [[projects]]
-  name = "github.com/Preetam/lm2"
-  packages = ["."]
-  revision = "9b26c2078c1d1ed0131fc77c3f8e8f4b0c0d121e"
-  version = "v2.2.5"
+  digest = "1:7b841f0b7b411cea4f89e28645b091d4cd0dc9da9bd466fa4b16d837e6fce969"
+  name = "github.com/aws/aws-sdk-go"
+  packages = [
+    "aws",
+    "aws/awserr",
+    "aws/awsutil",
+    "aws/client",
+    "aws/client/metadata",
+    "aws/credentials",
+    "aws/endpoints",
+    "aws/request",
+    "aws/signer/v4",
+    "internal/s3err",
+    "internal/sdkio",
+    "internal/sdkrand",
+    "internal/shareddefaults",
+    "private/protocol",
+    "private/protocol/eventstream",
+    "private/protocol/eventstream/eventstreamapi",
+    "private/protocol/query",
+    "private/protocol/query/queryutil",
+    "private/protocol/rest",
+    "private/protocol/restxml",
+    "private/protocol/xml/xmlutil",
+    "service/s3",
+  ]
+  pruneopts = "UT"
+  revision = "bf8067ceb6e7f51e150c218972dccfeeed892b85"
+  version = "v1.15.54"
 
 [[projects]]
-  name = "github.com/Preetam/lm2log"
+  digest = "1:b98e7574fc27ec166fb31195ec72c3bd0bffd73926d3612eb4c929bc5236f75b"
+  name = "github.com/go-ini/ini"
   packages = ["."]
-  revision = "5df40bd096b36fcb73b3fa6b4d7afb774d7e4da6"
-  version = "v1.1.1"
+  pruneopts = "UT"
+  revision = "7b294651033cd7d9e7f0d9ffa1b75ed1e198e737"
+  version = "v1.38.3"
 
 [[projects]]
-  name = "github.com/Preetam/siesta"
+  digest = "1:e22af8c7518e1eab6f2eab2b7d7558927f816262586cd6ed9f349c97a6c285c4"
+  name = "github.com/jmespath/go-jmespath"
   packages = ["."]
-  revision = "d3bb1906d7bfe7f00a7399b58de98ac2942e5b7a"
-  version = "v1.0.0"
+  pruneopts = "UT"
+  revision = "0b12d6b5"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cf9b23bc92bb7cef78d9ce62b49732fcf2bbf019921eded5b207c79e45c23ad2"
+  input-imports = [
+    "github.com/aws/aws-sdk-go/aws/awserr",
+    "github.com/aws/aws-sdk-go/service/s3",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -18,7 +18,11 @@ package main
  */
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
+	"io"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -54,6 +58,8 @@ type MetadataService struct {
 	lock sync.RWMutex
 
 	dataDir string
+
+	riggedService *rig.RiggedService
 }
 
 func NewMetadataService(dataDir string) (*MetadataService, error) {
@@ -149,12 +155,77 @@ func (s *MetadataService) Version() (uint64, error) {
 	return strconv.ParseUint(versionStr, 10, 64)
 }
 
+type kvPair struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+func (s *MetadataService) Snapshot() (io.ReadSeeker, int64, error) {
+	cur, err := s.col.NewCursor()
+	if err != nil {
+		return nil, 0, err
+	}
+
+	snapshotData := []kvPair{}
+	for cur.Next() {
+		snapshotData = append(snapshotData, kvPair{Key: cur.Key(), Value: cur.Value()})
+	}
+	marshaled, err := json.Marshal(snapshotData)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return bytes.NewReader(marshaled), int64(len(marshaled)), nil
+}
+
+func (s *MetadataService) Restore(version uint64, r io.Reader) error {
+	snapshotData := []kvPair{}
+	err := json.NewDecoder(r).Decode(&snapshotData)
+	if err != nil {
+		return err
+	}
+	err = s.col.Destroy()
+	if err != nil {
+		return err
+	}
+	collectionPath := filepath.Join(s.dataDir, "data")
+	s.col, err = lm2.NewCollection(filepath.Join(collectionPath, "data.lm2"), 100000)
+	if err != nil {
+		return err
+	}
+	wb := lm2.NewWriteBatch()
+	for _, kv := range snapshotData {
+		wb.Set(kv.Key, kv.Value)
+	}
+	_, err = s.col.Update(wb)
+	return err
+}
+
 func (s *MetadataService) Service() *siesta.Service {
 	MetadataService := siesta.NewService("/")
 	MetadataService.AddPre(middleware.RequestIdentifier)
 	MetadataService.AddPre(middleware.CheckAuth)
 	MetadataService.AddPost(middleware.ResponseGenerator)
 	MetadataService.AddPost(middleware.ResponseWriter)
+
+	MetadataService.Route("POST", "/do", "Do is the write endpoint", func(c siesta.Context, w http.ResponseWriter, r *http.Request) {
+		requestData := c.Get(middleware.RequestDataKey).(*middleware.RequestData)
+
+		var doPayload rig.Operation
+		err := json.NewDecoder(r.Body).Decode(&doPayload)
+		if err != nil {
+			requestData.ResponseError = err.Error()
+			requestData.StatusCode = http.StatusBadRequest
+			return
+		}
+
+		err = s.riggedService.Apply(doPayload, true)
+		if err != nil {
+			requestData.ResponseError = err.Error()
+			requestData.StatusCode = http.StatusInternalServerError
+			return
+		}
+	})
 
 	// Read endpoints
 
