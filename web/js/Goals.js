@@ -708,7 +708,7 @@ var GoalAddDataPage = function(goal) {
 
 var UpdateGoalForm = {
   oninit: function(vnode) {
-    vnode.state.goal = new Goal(vnode.attrs.goal);
+    vnode.state.goal = vnode.attrs.goal;
   },
   view: function(vnode) {
     return m("form", {
@@ -723,7 +723,7 @@ var UpdateGoalForm = {
         m("label", {for: "form-goal-name"}, "Name"),
         m("input#form-goal-name", {
           class: "form-control",
-          oninput: m.withAttr("value", vnode.state.goal.setName.bind(vnode.state.goal)),
+          onchange: m.withAttr("value", function(val) {this.goal.name = val}, vnode.state),
           value: vnode.state.goal.name
         }),
         m("div#form-goal-name-help", {class: "pure-form-message-inline"}, "Give your goal a name.")
@@ -732,7 +732,7 @@ var UpdateGoalForm = {
         m("label", {for: "form-goal-target"}, "Target"),
         m("input#form-goal-target", {
           class: "form-control",
-          oninput: m.withAttr("value", vnode.state.goal.setTarget.bind(vnode.state.goal)),
+          onchange: m.withAttr("value", function(val) {this.goal.target = parseFloat(val)}, vnode.state),
           value: vnode.state.goal.target
         }),
         m("div#form-goal-target-help", {class: "pure-form-message-inline"},
@@ -746,6 +746,12 @@ var UpdateGoalForm = {
 var GoalSettingsPage = function(goal) {
   this.oninit = function(vnode) {
     vnode.state.goal = goal;
+    vnode.state.goalUpdateForm = m(UpdateGoalForm, {
+      goal: vnode.state.goal,
+      update: function(goal) {
+        Goal.update(goal).then(function() {location.reload()})
+      }
+    })
   }
 
   this.view = function(vnode) {
@@ -757,12 +763,7 @@ var GoalSettingsPage = function(goal) {
     return m("div", [
       m("div.col-sm-9", {style: "padding-top: 0.5rem;"}, [
         m("h3.tv-goal-details-section-title", "Settings"),
-        m("div", {style: "margin-bottom: 1rem;"}, m(UpdateGoalForm, {
-          goal: vnode.state.goal,
-          update: function(goal) {
-            Goal.update(goal).then(function() {location.reload()})
-          }
-        })),
+        m("div", {style: "margin-bottom: 1rem;"}, vnode.state.goalUpdateForm),
         m("hr.tv-section-separator"),
         m("form", {
           class: "pure-form pure-form-stacked"
