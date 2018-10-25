@@ -11,11 +11,11 @@
 
 [[projects]]
   branch = "cloud-native"
-  digest = "1:aa013260cf132b12a5b9f5607da388830289d9f2d8c70925d1909af2ada2e7db"
+  digest = "1:1fe75ceeca0d0674ecf87d51b5f09c8a737e6255b322c0a4dde3f1ca640875eb"
   name = "github.com/Preetam/rig"
   packages = ["."]
   pruneopts = "UT"
-  revision = "a2023ec8bef51de465ff37e14e9bf215ba7b0ddd"
+  revision = "632df1f98c143e1484456fa6a6188ad2c737bb42"
 
 [[projects]]
   digest = "1:76cfd7ad2a10f5fe437f41657b04ee03f29c7320092f24dab57d641d02c6d446"
@@ -34,7 +34,7 @@
   version = "v1.1.1"
 
 [[projects]]
-  digest = "1:521cfc21291aef9e7a68d37cea41f77ecc26fd381c1b1541a7444623e7cda37e"
+  digest = "1:f9135c94393e30a657b9e0dfbac0c037d25226ee0183fa20119ea5144ef3122f"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -54,6 +54,7 @@
     "aws/request",
     "aws/session",
     "aws/signer/v4",
+    "internal/ini",
     "internal/s3err",
     "internal/sdkio",
     "internal/sdkrand",
@@ -71,16 +72,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "c35fe9d06b9f0cefe538ecdb7501c84603119dfb"
-  version = "v1.15.56"
-
-[[projects]]
-  digest = "1:15e27372d379b45b18ac917b9dafc45c45485239490ece18cca97a12f9591146"
-  name = "github.com/go-ini/ini"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "9c8236e659b76e87bf02044d06fde8683008ff3e"
-  version = "v1.39.0"
+  revision = "c446a547f59665b7ce54ac57bd8f8b04e5179563"
+  version = "v1.15.62"
 
 [[projects]]
   digest = "1:e22af8c7518e1eab6f2eab2b7d7558927f816262586cd6ed9f349c97a6c285c4"
@@ -115,18 +108,18 @@
     "ssh/terminal",
   ]
   pruneopts = "UT"
-  revision = "0c41d7ab0a0ee717d4590a44bcb987dfd9e183eb"
+  revision = "74cb1d3d52f4c01cbfb44c1b50d204462f3124c7"
 
 [[projects]]
   branch = "master"
-  digest = "1:f5aa274a0377f85735edc7fedfb0811d3cbc20af91633797cb359e29c3272271"
+  digest = "1:b9c7e858b8e2f3e6a53a561a1f032fa38c91c626e1f3b7e42e08505af95a02a9"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "UT"
-  revision = "fa43e7bc11baaae89f3f902b2b4d832b68234844"
+  revision = "5cd93ef61a7c8f0f858690154eb6de2e69415fa1"
 
 [[projects]]
   digest = "1:6ad77325212e02cc2c76bc974fcfb59a227018afddbd3bc78ea3cc53dadb2554"

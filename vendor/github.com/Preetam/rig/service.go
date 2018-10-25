@@ -29,14 +29,15 @@ type Operation struct {
 }
 
 type RiggedService struct {
-	service        Service
-	currentVersion uint64
-	prefix         string
-	objectStore    ObjectStore
-	pending        []Operation
-	lastFlush      uint64
-	lastSnapshot   uint64
-	lock           sync.Mutex
+	service          Service
+	currentVersion   uint64
+	prefix           string
+	objectStore      ObjectStore
+	pending          []Operation
+	lastFlush        uint64
+	lastSnapshot     uint64
+	lastSnapshotTime time.Time
+	lock             sync.Mutex
 }
 
 func NewRiggedService(service Service, objectStore ObjectStore, prefix string) (*RiggedService, error) {
@@ -217,8 +218,12 @@ func (rs *RiggedService) Snapshot() error {
 		return err
 	}
 	if snapshotVersion == rs.lastSnapshot {
-		// Nothing to do
-		return nil
+		if time.Now().Before(rs.lastSnapshotTime.Add(24 * time.Hour)) {
+			// Less than a day since we took the snapshot, so avoid
+			// taking another one. If it's been longer, take it again
+			// to be friendly with lifecycle management.
+			return nil
+		}
 	}
 	r, size, err := rs.service.Snapshot()
 	if err != nil {
@@ -237,6 +242,7 @@ func (rs *RiggedService) Snapshot() error {
 		return err
 	}
 	rs.lastSnapshot = snapshotVersion
+	rs.lastSnapshotTime = time.Now()
 	if rs.currentVersion < snapshotVersion {
 		rs.currentVersion = snapshotVersion
 	}
