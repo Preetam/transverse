@@ -1,10 +1,13 @@
+html, button, input, select, textarea, .pure-g [class *= "pure-u"] {
+  font-family: "chronica_pro", Verdana, sans-serif;
+  color: #333;
+}
+
 body {
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   padding: 0;
   margin: 0;
-  font-family: "chronica_pro", Verdana, sans-serif;
-  color: #333;
 }
 
 a {
@@ -34,7 +37,6 @@ a {
 
 /* Hamburger menu icon */
 .tv-hamburger {
-  display: inline-block;
   cursor: pointer;
   float: right;
   margin: 5px 0;
@@ -192,11 +194,49 @@ hr.tv-section-separator {
   text-align: center;
 }
 
-.tv-landing-section-heading {
-  font-weight: 300;
-  font-size: 30px;
-  margin: 0;
-  padding: 0;
+.tv-landing-header-img {
+  background-image: url(/img/header-bg.png);
+  height: 400px;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background-size: 100% 100%;
+  z-index: -1;
+}
+
+.tv-landing-header {
+  color: white;
+  font-weight: normal;
+  font-size: 1.3rem;
+}
+
+.tv-landing-header span {
+  font-weight: bold;
+}
+
+.tv-landing-header-content {
+  height: 100px;
+  margin: 150px 50px;
+}
+
+.tv-get-started-button-container {
+  text-align: center;
+}
+
+.tv-landing-header-content .pure-button {
+  margin: 0 auto;
+  box-shadow: #000 0 0 10px;
+}
+
+.tv-landing-details {
+  padding: 1rem;
+}
+
+.tv-landing-details-section img {
+  max-width: 90%;
+  max-height: 250px;
+  padding: 2rem 0;
 }
 
 footer {
@@ -285,10 +325,26 @@ footer a {
   }
 
   .tv-menu-items {
-    display: inline-block;
     float: right;
     line-height: 32px;
     font-size: 14px;
     color: rgba(255, 255, 255, 0.5);
+  }
+
+  .tv-landing-header-img {
+    height: 500px;
+  }
+
+  .tv-landing-header {
+    font-size: 1.7rem;
+  }
+
+  .tv-landing-header-content {
+    height: 300px;
+    margin: 100px 50px;
+  }
+
+  .tv-landing-details-section p {
+    max-width: 80%;
   }
 }
