@@ -195,6 +195,7 @@ hr.tv-section-separator {
 }
 
 .tv-landing-header-img {
+  background-color: black;
   background-image: url(/img/header-bg.png);
   height: 400px;
   position: absolute;
