@@ -88,10 +88,10 @@ func (f *Forecaster) Forecast(data []float64) []forecast.ForecastPoint {
 		monotonicDecreasing := true
 		for i, point := range data {
 			if i >= 2 {
-				if data[i] > data[i-1] && data[i-1] < data[i-2] {
+				if data[i] > data[i-1] {
 					monotonicDecreasing = false
 				}
-				if data[i] < data[i-1] && data[i-1] > data[i-2] {
+				if data[i] < data[i-1] {
 					monotonicIncreasing = false
 				}
 			}
@@ -110,7 +110,7 @@ func (f *Forecaster) Forecast(data []float64) []forecast.ForecastPoint {
 			}
 			model.AddPoint(point)
 			forecastPointsForErr = forecastPointsForErr[1:]
-			forecastPointsForErr = append(forecastPointsForErr, model.Forecast(nStep-1))
+			forecastPointsForErr = append(forecastPointsForErr, model.Forecast(nStep))
 		}
 
 		avgErrAbove := errorAbove / pointsForecasted

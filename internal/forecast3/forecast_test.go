@@ -21,5 +21,5 @@ import "testing"
 
 func TestForecast(t *testing.T) {
 	forecaster := NewForecaster()
-	t.Logf("%v", forecaster.Forecast([]float64{0, 1, 2, 3, 4, 5, 6, 7}))
+	t.Logf("%v", forecaster.Forecast([]float64{0, 1, 2, 4, 8, 16, 32, 64}))
 }
