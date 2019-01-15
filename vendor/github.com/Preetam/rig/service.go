@@ -15,6 +15,8 @@ import (
 	"time"
 )
 
+const sleepTimeSec = 10
+
 type Service interface {
 	Version() (uint64, error)
 	Validate(Operation) error
@@ -29,15 +31,20 @@ type Operation struct {
 }
 
 type RiggedService struct {
-	service          Service
-	currentVersion   uint64
-	prefix           string
-	objectStore      ObjectStore
-	pending          []Operation
-	lastFlush        uint64
-	lastSnapshot     uint64
-	lastSnapshotTime time.Time
-	lock             sync.Mutex
+	service            Service
+	currentVersion     uint64
+	prefix             string
+	objectStore        ObjectStore
+	pending            []Operation
+	lastFlush          uint64
+	lastSnapshot       uint64
+	lastSnapshotTime   time.Time
+	accessedMissingLog bool
+	lock               sync.Mutex
+
+	now        func() int64
+	testSleep  bool // set to true during tests to avoid sleeping
+	firstFlush bool
 }
 
 func NewRiggedService(service Service, objectStore ObjectStore, prefix string) (*RiggedService, error) {
@@ -60,6 +67,9 @@ func NewRiggedService(service Service, objectStore ObjectStore, prefix string) (
 		objectStore:    objectStore,
 		prefix:         prefix,
 		currentVersion: currentVersion,
+
+		now:        func() int64 { return time.Now().Unix() },
+		firstFlush: true,
 	}, nil
 }
 
@@ -72,10 +82,24 @@ func (rs *RiggedService) Recover() error {
 	}
 	rs.lastFlush = rs.currentVersion
 	for {
-		err = rs.recoverLogBatch(rs.currentVersion + 1)
+		err = rs.recoverLogBatch(rs.currentVersion+1, 0)
 		if err != nil {
 			if err == errDoesNotExist {
-				return nil
+				rs.accessedMissingLog = true
+				// Access a timestamped log record to
+				// try to avoid a consistency issue.
+				if !rs.testSleep {
+					time.Sleep(sleepTimeSec * time.Second)
+				}
+				err = rs.recoverLogBatch(rs.currentVersion+1, int(rs.now()/sleepTimeSec))
+				if err != nil {
+					if err == errDoesNotExist {
+						return nil
+					}
+					return err
+				}
+				// Keep going
+				continue
 			}
 			return err
 		}
@@ -114,8 +138,13 @@ func (rs *RiggedService) recoverLatestSnapshot() error {
 	return nil
 }
 
-func (rs *RiggedService) recoverLogBatch(version uint64) error {
-	r, err := rs.objectStore.GetObject(rs.getLogRecordName(version))
+func (rs *RiggedService) recoverLogBatch(version uint64, timestamp int) error {
+	logObjectName := rs.getLogRecordName(version)
+	if timestamp > 0 {
+		// Append timestamp to the name
+		logObjectName += fmt.Sprintf("-%d", timestamp)
+	}
+	r, err := rs.objectStore.GetObject(logObjectName)
 	if err != nil {
 		return err
 	}
@@ -204,6 +233,16 @@ func (rs *RiggedService) Flush() (int, error) {
 	if err != nil {
 		return 0, err
 	}
+
+	if rs.firstFlush {
+		err = rs.objectStore.PutObject(fmt.Sprintf("%s-%d", rs.getLogRecordName(batchVersion), (rs.now()/sleepTimeSec+1)),
+			bytes.NewReader(buf.Bytes()), int64(buf.Len()))
+		if err != nil {
+			return 0, err
+		}
+		rs.firstFlush = false
+	}
+
 	rs.pending = rs.pending[:0]
 	rs.lastFlush = batchVersion + uint64(numRecords) - 1
 	return numRecords, nil
