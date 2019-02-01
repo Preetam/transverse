@@ -230,15 +230,6 @@ func main() {
 			return
 		}
 
-		if !strings.HasSuffix(strings.ToLower(user.Email), "@preet.am") {
-			templ.ExecuteTemplate(w, templateName, map[string]string{
-				"Error":      "Sorry, Transverse is currently disabled for your user.",
-				"CDNDomain":  CDNDomain,
-				"CDNVersion": CDNVersion,
-			})
-			return
-		}
-
 		if *password && user.Verified {
 			if bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(*loginPassword)) == nil {
 				userToken := &token.UserTokenData{
