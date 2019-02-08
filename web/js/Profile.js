@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
- // Profile page
+// Profile page
 var m = require("mithril");
 var User = require("./user");
 

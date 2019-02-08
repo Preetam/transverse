@@ -15,16 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
- var m = require("mithril")
+var m = require("mithril")
 var PrimaryNav = require("./primary-nav")
-var Goals = require("./Goals")
-var Profile = require("./Profile")
+var GoalsListPage = require("./goalsListPage")
+var GoalDetailsPage = require("./goalDetailsPage")
+var GoalAddPage = require("./goalAddPage")
+var Profile = require("./profile")
 
 m.mount(document.querySelector("#primaryNav"), PrimaryNav);
 
 m.route(document.getElementById("app"), "/goals", {
-  "/goals": Goals.GoalsListPage,
-  "/create-goal": Goals.AddGoalPage,
-  "/goals/:id": Goals.GoalDetailsPage,
+  "/goals": GoalsListPage,
+  "/create-goal": GoalAddPage,
+  "/goals/:id": GoalDetailsPage,
   "/profile": Profile.ProfilePage
 })

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
- var m = require("mithril")
+var m = require("mithril")
 var req = require("./req")
 var User = require("./user")
 

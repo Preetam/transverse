@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
- var papaparse = require("papaparse")
+var papaparse = require("papaparse")
 
 function parseCSV(str) {
   str = str.trim();
