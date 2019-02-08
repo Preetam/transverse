@@ -326,6 +326,7 @@ footer a {
   }
 
   .tv-menu-items {
+    display: inherit;
     float: right;
     line-height: 32px;
     font-size: 14px;
