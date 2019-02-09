@@ -28,12 +28,43 @@ var NoGoalsNotice = {
   }
 }
 
+class ActiveGoalToggle {
+  constructor(cb) {
+    this.activeOnly = true;
+    this.oninit = function (vnode) {
+      vnode.state.activeOnly = true;
+      vnode.state.callback = cb;
+    };
+    this.view = function(vnode) {
+      return m("div.tv-goals-list-filter", [
+        "Showing ",
+        m("a", {
+          onclick: function() {
+            vnode.state.activeOnly = !vnode.state.activeOnly;
+            vnode.state.callback(vnode.state.activeOnly);
+          },
+          style: {
+            fontWeight: "bold",
+            cursor: "pointer"
+          }
+        }, vnode.state.activeOnly ? "active" : "all"),
+        " goals."
+      ])
+    }
+  }
+}
+
 var GoalsListPage = {
   oninit: function(vnode) {
     vnode.state.goals = new Goals;
     vnode.state.archived = false;
     vnode.state.loading = true;
     vnode.state.error = "";
+    vnode.state.activeToggle = new ActiveGoalToggle(function(activeOnly) {
+      Goals.get(vnode.state.goals, !activeOnly).then(function() {vnode.state.loading = false}).catch(function(e) {
+        vnode.state.loading = false;
+      })
+    });
     Goals.get(vnode.state.goals, vnode.state.archived).then(function() {vnode.state.loading = false}).catch(function(e) {
       vnode.state.loading = false;
     })
@@ -57,15 +88,7 @@ var GoalsListPage = {
     }
     return m("div", [
       m("h1.tv-page-title", "Goals"),
-      m("button", {
-      class: "pure-button",
-      style: {fontSize: "70%", margin: "1rem 0"},
-      onclick: function() {
-        vnode.state.archived = !vnode.state.archived;
-        Goals.get(vnode.state.goals, vnode.state.archived).then(function() {vnode.state.loading = false}).catch(function(e) {
-          vnode.state.loading = false;
-        })
-      }}, "Toggle archived goals"),
+      m(vnode.state.activeToggle),
       m("table", {class: "table table-sm goals-list-table"}, [
         m("tbody", [
           (function() {
