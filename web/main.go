@@ -55,7 +55,7 @@ var (
 	mg mailgun.Mailgun
 
 	CDNDomain  = ""
-	CDNVersion = "0.5.4"
+	CDNVersion = "0.5.5"
 )
 
 func main() {

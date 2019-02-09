@@ -22,6 +22,7 @@ var Chart = require("./chart")
 var ChartState = require("./chartState")
 var Goal = require("./goals").Goal
 var Goals = require("./goals").Goals
+var Spinner = require("./spinner")
 
 function getRelativeTimeString(d) {
   var now = new Date();
@@ -103,7 +104,7 @@ var GoalDetailsPage = {
   },
   view: function(vnode) {
     if (vnode.state.goal.user === "" && vnode.state.goal.error === "") {
-      return m("p", "Loading...")
+      return m(Spinner)
     }
     if (vnode.state.goal.error != "") {
       return m("div", [
@@ -241,7 +242,7 @@ var GoalAddDataPage = function(goal) {
 
   this.view = function(vnode) {
     if (vnode.state.goal.error === "" && vnode.state.goal.user === "") {
-      return m("div", "Loading...")
+      return m(Spinner)
     }
     if (vnode.state.submitError != "") {
       return m("div", [
@@ -372,7 +373,7 @@ var GoalSettingsPage = function(goal) {
     var archiveAction = (vnode.state.goal.archived ? "unarchive" : "archive");
     var archiveActionButtonText = (vnode.state.goal.archived ? "Unarchive" : "Archive");
     if (vnode.state.goal.error === "" && vnode.state.goal.user === "") {
-      return m("div", "Loading...")
+      return m(Spinner)
     }
     return m("div", [
       m("div.col-sm-9", {style: "padding-top: 0.5rem;"}, [

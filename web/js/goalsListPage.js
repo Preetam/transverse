@@ -18,6 +18,7 @@
 var m = require("mithril")
 var moment = require("moment")
 var Goals = require("./goals").Goals
+var Spinner = require("./spinner")
 
 var NoGoalsNotice = {
   view: function(vnode) {
@@ -71,7 +72,7 @@ var GoalsListPage = {
   },
   view: function(vnode) {
     if (vnode.state.loading) {
-      return m("p", "Loading...")
+      return m(Spinner)
     }
     if (vnode.state.error != "") {
       return m("div", [
