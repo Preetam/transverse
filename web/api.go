@@ -68,6 +68,7 @@ func (api *API) Service() *siesta.Service {
 
 	// Goal data
 	APIService.Route("GET", "/goals/:goalID/data", "serves get goal data API endpoint", api.GetGoalData)
+	APIService.Route("GET", "/goals/:goalID/eta", "serves get goal eta API endpoint", api.GetGoalETA)
 	APIService.Route("GET", "/goals/:goalID/raw-data", "serves get raw goal data API endpoint", api.GetRawGoalData)
 	APIService.Route("POST", "/goals/:goalID/data", "serves add goal data API endpoint", api.PostGoalData)
 	APIService.Route("POST", "/goals/:goalID/data/single", "serves add goal single data API endpoint", api.PostGoalDataSingle)
@@ -491,61 +492,7 @@ func (api *API) GetRawGoalData(c siesta.Context, w http.ResponseWriter, r *http.
 	}
 }
 
-func (api *API) GetGoalData(c siesta.Context, w http.ResponseWriter, r *http.Request) {
-	requestData := c.Get(middleware.RequestDataKey).(*middleware.RequestData)
-	userTokenData := c.Get(UserContextKey).(*token.UserTokenData)
-
-	var params siesta.Params
-	goalID := params.String("goalID", "", "Goal ID")
-	err := params.Parse(r.Form)
-	if err != nil {
-		log.Println(requestData.RequestID, err)
-		requestData.StatusCode = http.StatusBadRequest
-		return
-	}
-
-	goal, err := MetadataClient.GetGoal(*goalID)
-	if err != nil {
-		log.Println(requestData.RequestID, err)
-		requestData.StatusCode = http.StatusInternalServerError
-		if serverErr, ok := err.(client.ServerError); ok {
-			requestData.StatusCode = int(serverErr)
-		}
-		return
-	}
-
-	if goal.User != userTokenData.User {
-		log.Println(requestData.RequestID, err)
-		requestData.StatusCode = http.StatusForbidden
-		return
-	}
-
-	getObjectStartTime := time.Now()
-	reader, err := api.os.GetObject(*goalID)
-	if err != nil {
-		if err == errDoesNotExist {
-			requestData.StatusCode = http.StatusNotFound
-			return
-		}
-		log.Println(requestData.RequestID, err)
-		requestData.StatusCode = http.StatusInternalServerError
-		return
-	}
-	getObjectEndTime := time.Now()
-	getObjectLatencyMs := getObjectEndTime.Sub(getObjectStartTime).Seconds() * 1000
-	log.WithFields(map[string]interface{}{
-		"get_object_latency_ms": getObjectLatencyMs,
-	}).Printf("Getting object took %0.2f ms", getObjectLatencyMs)
-
-	goalData := []goalDataPoint{}
-
-	err = json.NewDecoder(reader).Decode(&goalData)
-	if err != nil {
-		log.Println(requestData.RequestID, err)
-		requestData.StatusCode = http.StatusBadRequest
-		return
-	}
-
+func getGoalDataInternal(goal client.Goal, goalData []goalDataPoint) map[string]interface{} {
 	type forecastT struct {
 		Timestamp time.Time `json:"ts"`
 		Value     float64   `json:"value"`
@@ -726,6 +673,122 @@ func (api *API) GetGoalData(c siesta.Context, w http.ResponseWriter, r *http.Req
 	if haveETA {
 		resp["eta"] = eta
 	}
+	return resp
+}
+
+func (api *API) GetGoalData(c siesta.Context, w http.ResponseWriter, r *http.Request) {
+	requestData := c.Get(middleware.RequestDataKey).(*middleware.RequestData)
+	userTokenData := c.Get(UserContextKey).(*token.UserTokenData)
+
+	var params siesta.Params
+	goalID := params.String("goalID", "", "Goal ID")
+	err := params.Parse(r.Form)
+	if err != nil {
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusBadRequest
+		return
+	}
+
+	goal, err := MetadataClient.GetGoal(*goalID)
+	if err != nil {
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusInternalServerError
+		if serverErr, ok := err.(client.ServerError); ok {
+			requestData.StatusCode = int(serverErr)
+		}
+		return
+	}
+
+	if goal.User != userTokenData.User {
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusForbidden
+		return
+	}
+
+	getObjectStartTime := time.Now()
+	reader, err := api.os.GetObject(*goalID)
+	if err != nil {
+		if err == errDoesNotExist {
+			requestData.StatusCode = http.StatusNotFound
+			return
+		}
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusInternalServerError
+		return
+	}
+	getObjectEndTime := time.Now()
+	getObjectLatencyMs := getObjectEndTime.Sub(getObjectStartTime).Seconds() * 1000
+	log.WithFields(map[string]interface{}{
+		"get_object_latency_ms": getObjectLatencyMs,
+	}).Printf("Getting object took %0.2f ms", getObjectLatencyMs)
+
+	goalData := []goalDataPoint{}
+
+	err = json.NewDecoder(reader).Decode(&goalData)
+	if err != nil {
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusBadRequest
+		return
+	}
+	requestData.ResponseData = getGoalDataInternal(goal, goalData)
+}
+
+func (api *API) GetGoalETA(c siesta.Context, w http.ResponseWriter, r *http.Request) {
+	requestData := c.Get(middleware.RequestDataKey).(*middleware.RequestData)
+	userTokenData := c.Get(UserContextKey).(*token.UserTokenData)
+
+	var params siesta.Params
+	goalID := params.String("goalID", "", "Goal ID")
+	err := params.Parse(r.Form)
+	if err != nil {
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusBadRequest
+		return
+	}
+
+	goal, err := MetadataClient.GetGoal(*goalID)
+	if err != nil {
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusInternalServerError
+		if serverErr, ok := err.(client.ServerError); ok {
+			requestData.StatusCode = int(serverErr)
+		}
+		return
+	}
+
+	if goal.User != userTokenData.User {
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusForbidden
+		return
+	}
+
+	getObjectStartTime := time.Now()
+	reader, err := api.os.GetObject(*goalID)
+	if err != nil {
+		if err == errDoesNotExist {
+			requestData.StatusCode = http.StatusNotFound
+			return
+		}
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusInternalServerError
+		return
+	}
+	getObjectEndTime := time.Now()
+	getObjectLatencyMs := getObjectEndTime.Sub(getObjectStartTime).Seconds() * 1000
+	log.WithFields(map[string]interface{}{
+		"get_object_latency_ms": getObjectLatencyMs,
+	}).Printf("Getting object took %0.2f ms", getObjectLatencyMs)
+
+	goalData := []goalDataPoint{}
+
+	err = json.NewDecoder(reader).Decode(&goalData)
+	if err != nil {
+		log.Println(requestData.RequestID, err)
+		requestData.StatusCode = http.StatusBadRequest
+		return
+	}
+	resp := map[string]interface{}{}
+	resp["eta"] = getGoalDataInternal(goal, goalData)["eta"]
 	requestData.ResponseData = resp
 }
 

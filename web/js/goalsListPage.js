@@ -18,6 +18,7 @@
 var m = require("mithril")
 var moment = require("moment")
 var Goals = require("./goals").Goals
+var Goal = require("./goals").Goal
 var Spinner = require("./spinner")
 
 var NoGoalsNotice = {
@@ -66,7 +67,12 @@ var GoalsListPage = {
         vnode.state.loading = false;
       })
     });
-    Goals.get(vnode.state.goals, vnode.state.archived).then(function() {vnode.state.loading = false}).catch(function(e) {
+    Goals.get(vnode.state.goals, vnode.state.archived).then(function() {
+      vnode.state.loading = false;
+      for (var i in vnode.state.goals.data) {
+        Goal.getETA(vnode.state.goals.data[i]);
+      }
+    }).catch(function(e) {
       vnode.state.loading = false;
     })
   },
@@ -113,7 +119,8 @@ var GoalsListPage = {
                 m("td", m("div.tv-goal-list-item", [
                   m("div", m("a.tv-goal-list-name[href=/goals/"+goal.id+"]", {oncreate: m.route.link}, goal.name + (goal.archived ? " (archived)" : ""))),
                   m("div.tv-list-created-updated", "Updated ", m("strong", moment(""+goal.updated, "X").fromNow())),
-                  m("div.tv-list-created-updated", "Created ", m("strong", moment(""+goal.created, "X").fromNow()))
+                  m("div.tv-list-created-updated", "Created ", m("strong", moment(""+goal.created, "X").fromNow())),
+                  m("div.tv-list-created-updated", "ETA ", m("strong", goal.eta ? goal.eta + " days" : "unknown"))
                 ]))
               ]))
             }

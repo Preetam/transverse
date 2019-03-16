@@ -176,6 +176,18 @@ Goal.getData = function(goal) {
   })
 }
 
+Goal.getETA = function(goal) {
+  return req({
+    method: "GET",
+    url: "/api/v1/goals/"+goal.id+"/eta"
+  }).then(function(d) {
+    var d = d.data;
+    if (d.eta) {
+      goal.eta = d.eta;
+    }
+  })
+}
+
 Goal.getRawData = function(goal) {
   return req({
     method: "GET",
