@@ -238,10 +238,20 @@ hr.tv-section-separator {
   padding: 1rem;
 }
 
+.tv-landing-details-section h2 {
+  color: #000;
+  font-weight: 300;
+}
+
+.tv-landing-details-section p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .tv-landing-details-section img {
   max-width: 90%;
   max-height: 250px;
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 
 footer {
