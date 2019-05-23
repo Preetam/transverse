@@ -31,6 +31,7 @@ type Goal struct {
 	User        string  `json:"user"`
 	Description string  `json:"description"`
 	Target      float64 `json:"target"`
+	ETA         int64   `json:"eta"`
 	Archived    bool    `json:"archived"`
 	Created     int64   `json:"created"`
 	Updated     int64   `json:"updated"`

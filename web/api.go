@@ -762,6 +762,18 @@ func (api *API) GetGoalETA(c siesta.Context, w http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	hasETA := goal.ETA != 0
+	if hasETA {
+		resp := map[string]interface{}{}
+		if goal.ETA == -1 {
+			resp["eta"] = nil
+		} else {
+			resp["eta"] = goal.ETA
+		}
+		requestData.ResponseData = resp
+		return
+	}
+
 	getObjectStartTime := time.Now()
 	reader, err := api.os.GetObject(*goalID)
 	if err != nil {
@@ -790,6 +802,11 @@ func (api *API) GetGoalETA(c siesta.Context, w http.ResponseWriter, r *http.Requ
 	resp := map[string]interface{}{}
 	resp["eta"] = getGoalDataInternal(goal, goalData)["eta"]
 	requestData.ResponseData = resp
+
+	if resp["eta"] != nil {
+		goal.ETA = int64(resp["eta"].(int))
+		MetadataClient.UpdateGoal(goal)
+	}
 }
 
 type goalDataPoint struct {
