@@ -170,7 +170,9 @@ Goal.getData = function(goal) {
       goal.slope = d.prediction[1].value - d.prediction[0].value;
     }
     if (d.eta) {
-      goal.eta = d.eta;
+      if (d.eta > 0) {
+        goal.eta = d.eta;
+      }
     }
     goal.data = d;
   })
