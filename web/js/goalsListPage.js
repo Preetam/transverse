@@ -106,7 +106,11 @@ var GoalsListPage = {
           (function() {
             var goals = [];
             for (var i in vnode.state.goals.data) {
-              goals.push(this.goals.data[i]);
+              let goal = this.goals.data[i];
+              if (goal.eta < 0) {
+                goal.eta = null;
+              }
+              goals.push(goal);
             }
             goals.sort(function(a, b) {
               if (a.name < b.name) {
