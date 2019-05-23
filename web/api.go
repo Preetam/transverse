@@ -805,8 +805,10 @@ func (api *API) GetGoalETA(c siesta.Context, w http.ResponseWriter, r *http.Requ
 
 	if resp["eta"] != nil {
 		goal.ETA = int64(resp["eta"].(int))
-		MetadataClient.UpdateGoal(goal)
+	} else {
+		goal.ETA = -1
 	}
+	MetadataClient.UpdateGoal(goal)
 }
 
 type goalDataPoint struct {
