@@ -61,6 +61,7 @@ var GoalsListPage = {
     vnode.state.goals = new Goals;
     vnode.state.archived = false;
     vnode.state.loading = true;
+    vnode.state.loadingETA = true;
     vnode.state.error = "";
     vnode.state.activeToggle = new ActiveGoalToggle(function(activeOnly) {
       Goals.get(vnode.state.goals, !activeOnly).then(function() {vnode.state.loading = false}).catch(function(e) {
@@ -70,7 +71,11 @@ var GoalsListPage = {
     Goals.get(vnode.state.goals, vnode.state.archived).then(function() {
       vnode.state.loading = false;
       for (var i in vnode.state.goals.data) {
-        Goal.getETA(vnode.state.goals.data[i]);
+        Goal.getETA(vnode.state.goals.data[i]).then(function() {
+          vnode.state.loadingETA = false;
+        }).catch(function() {
+          vnode.state.loadingETA = false;
+        });
       }
     }).catch(function(e) {
       vnode.state.loading = false;
@@ -120,7 +125,9 @@ var GoalsListPage = {
                   m("div", m("a.tv-goal-list-name[href=/goals/"+goal.id+"]", {oncreate: m.route.link}, goal.name + (goal.archived ? " (archived)" : ""))),
                   m("div.tv-list-created-updated", "Updated ", m("strong", moment(""+goal.updated, "X").fromNow())),
                   m("div.tv-list-created-updated", "Created ", m("strong", moment(""+goal.created, "X").fromNow())),
-                  m("div.tv-list-created-updated", "ETA ", m("strong", goal.eta ? goal.eta + " days" : "unknown"))
+                  m("div.tv-list-created-updated",
+                    "ETA ",
+                    vnode.state.loadingETA ? m(Spinner) : m("strong", goal.eta ? goal.eta + " days" : "unknown"))
                 ]))
               ]))
             }
