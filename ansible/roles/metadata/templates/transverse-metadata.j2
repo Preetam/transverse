@@ -1,7 +1,7 @@
 #!/bin/sh
-exec /home/ubuntu/bin/transverse-metadata \
+docker run --rm --publish=4000:4000 -v /data:/data --entrypoint /bin/transverse/metadata preetamjinka/transverse:latest \
   -data-dir=/data/transverse-metadata \
-  -listen=localhost:4000 \
+  -listen=0.0.0.0:4000 \
   -token={{metadata_token}} \
   -s3-key={{s3_key}} \
   -s3-secret={{s3_secret}} \

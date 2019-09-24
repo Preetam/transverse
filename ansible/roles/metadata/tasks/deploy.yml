@@ -1,23 +1,4 @@
 ---
-- name: Delete old metadata binary
-  file: path="/home/ubuntu/bin/transverse-metadata" state=absent
-  tags:
-    - deploy-metadata
-
-- name: Download binary
-  aws_s3:
-    bucket: infinitynorm-builds-1
-    object: "transverse_metadata_{{ build_sha }}"
-    dest: "/home/ubuntu/bin/transverse-metadata"
-    mode: get
-    aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
-    aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
-  tags:
-    - deploy-metadata
-
-- name: Make binary executable
-  file: dest="/home/ubuntu/bin/transverse-metadata" mode=a+x
-
 - name: Restart metadata
   command: sv restart /home/ubuntu/service/transverse-metadata/
   tags:
