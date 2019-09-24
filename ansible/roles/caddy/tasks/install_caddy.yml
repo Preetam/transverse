@@ -1,6 +1,6 @@
 ---
 - name: get Caddy
-  s3:
+  aws_s3:
     bucket: infinitynorm-builds-1
     object: "caddy.tar.gz"
     dest: "/tmp/caddy.tar.gz"

@@ -1,5 +1,5 @@
 [digitalocean]
-apps1.infinitynorm.com
+apps1.infinitynorm.com ansible_user=ubuntu
 
 [caddy]
 apps1.infinitynorm.com

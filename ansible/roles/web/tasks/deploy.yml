@@ -5,7 +5,7 @@
     - deploy-web
 
 - name: Download assets
-  s3:
+  aws_s3:
     bucket: infinitynorm-builds-1
     object: "transverse_assets_{{ build_sha }}.tar.gz"
     dest: "/tmp/transverse-assets.tar.gz"
@@ -24,7 +24,7 @@
     - deploy-web
 
 - name: Download binary
-  s3:
+  aws_s3:
     bucket: infinitynorm-builds-1
     object: "transverse_web_{{ build_sha }}"
     dest: "/home/ubuntu/bin/transverse-web"

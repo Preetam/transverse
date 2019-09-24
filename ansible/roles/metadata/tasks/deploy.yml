@@ -5,7 +5,7 @@
     - deploy-metadata
 
 - name: Download binary
-  s3:
+  aws_s3:
     bucket: infinitynorm-builds-1
     object: "transverse_metadata_{{ build_sha }}"
     dest: "/home/ubuntu/bin/transverse-metadata"
