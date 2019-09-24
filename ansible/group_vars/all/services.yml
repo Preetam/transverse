@@ -1,5 +1,5 @@
 metadata_listen_address: "localhost:4000"
-web_listen_address: "localhost:4001"
+web_listen_address: "0.0.0.0:4001"
 
 build_sha: be5f7070a6f35e5341ff946ece16e54a4aa1c16e
 s3_region: nyc3

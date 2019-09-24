@@ -1,5 +1,5 @@
 #!/bin/sh
-exec /home/ubuntu/bin/transverse-web \
+docker run --rm -w /bin/transverse/web --publish=4001:4001 --entrypoint /bin/transverse/web/web preetamjinka/transverse:latest \
   -addr={{web_listen_address}} \
   -metadata-addr="https://{{metadata_caddy_address}}" \
   -metadata-token={{metadata_token}} \
