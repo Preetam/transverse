@@ -1,5 +1,6 @@
 #!/bin/sh
-docker run --rm --publish=4000:4000 -v /data:/data --entrypoint /bin/transverse/metadata preetamjinka/transverse:{{build_sha}} \
+docker stop transverse-web
+docker run --name transverse-web --rm --publish=4000:4000 -v /data:/data --entrypoint /bin/transverse/metadata preetamjinka/transverse:{{build_sha}} \
   -data-dir=/data/transverse-metadata \
   -listen=0.0.0.0:4000 \
   -token={{metadata_token}} \
