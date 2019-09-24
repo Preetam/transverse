@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build and Push Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Docker login
+        uses: actions/docker/login@master
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        with:
+          args: DOCKER_USERNAME DOCKER_PASSWORD
+      - name: Docker build
+        uses: actions/docker/cli@86ff551d26008267bb89ac11198ba7f1d807b699
+        with:
+          args: "build -t preetamjinka/transverse:$GITHUB_SHA ."
+      - name: Push image to Docker Hub
+        uses: actions/docker/cli@86ff551d26008267bb89ac11198ba7f1d807b699
+        with:
+          args: "push preetamjinka/transverse:$GITHUB_SHA"
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ./.github/actions/ansible
+      env:
+        VAULT_PASS: ${{ secrets.VAULT_PASS }}
