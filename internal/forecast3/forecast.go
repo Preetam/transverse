@@ -38,6 +38,10 @@ func (f *Forecaster) Forecast(data []float64) []forecast.ForecastPoint {
 		maxInitPoints = 3
 	}
 
+	if len(data) > 60 {
+		data = data[len(data)-60 : len(data)]
+	}
+
 	// Find the best double exponential smoothing model.
 	var minModel *simpleModel
 	for alpha := 0.001; alpha < 0.3; alpha += 0.001 {
