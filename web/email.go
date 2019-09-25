@@ -31,7 +31,7 @@ var textTemplate = textTemplatePkg.Must(textTemplatePkg.New("text").Parse(`Hi th
 Cheers!
 --Preetam
 
-Copyright (c) 2018 Preetam Jinka
+Copyright (c) 2019 Preetam Jinka
 You are receiving this email because you signed up for Transverse.
 www.transverseapp.com
 `))
@@ -54,7 +54,7 @@ var emailTemplate = template.Must(template.New("email").Parse(`
 	</div>
 
 	<div style="color: #888; font-size: 12px; text-align: center; padding-top: 10px;">
-	  <p>Copyright &copy; 2018 Preetam Jinka</p>
+	  <p>Copyright &copy; 2019 Preetam Jinka</p>
 	  <p>You are receiving this email because you signed up for Transverse.</p>
 	  <a style="color: #888" href="https://www.transverseapp.com/">transverseapp.com</a>
 	</div>
