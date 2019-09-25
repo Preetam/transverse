@@ -1,6 +1,7 @@
 #!/bin/sh
 docker kill transverse-web
 docker rm transverse-web
+docker pull preetamjinka/transverse:{{build_sha}}
 docker run --name transverse-web --rm -w /bin/transverse/web --publish=4001:4001 --entrypoint /bin/transverse/web/web preetamjinka/transverse:{{build_sha}} \
   -addr={{web_listen_address}} \
   -metadata-addr="https://{{metadata_caddy_address}}" \
