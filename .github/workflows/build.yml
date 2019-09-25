@@ -1,9 +1,9 @@
 name: Branch build
 
 on:
-  push:
+  pull_request:
     branches:
-      - !master
+      - master
 
 name: Build and push
 jobs:
