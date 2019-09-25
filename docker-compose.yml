@@ -9,6 +9,8 @@ services:
       - metadata
     entrypoint: "/bin/transverse/web/web -dev-mode -addr 0.0.0.0:4001 -metadata-addr='http://metadata:4000/'"
     working_dir: "/bin/transverse/web"
+    # volumes:
+    #   - ./ui/static:/bin/transverse/web/static
   metadata:
     build:
       context: .

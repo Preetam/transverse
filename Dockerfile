@@ -7,13 +7,13 @@ COPY ./internal /go/src/github.com/Preetam/transverse/internal
 RUN cd /go/src/github.com/Preetam/transverse/web && go build
 RUN cd /go/src/github.com/Preetam/transverse/metadata && go build
 
-FROM node AS build-node
+FROM node AS build-ui
 
-COPY web /web
+COPY ui /ui
 
-RUN cd web && npm i
-RUN cd web && npm test
-RUN cd web && make all && npm run build
+RUN cd ui && npm i
+RUN cd ui && npm test
+RUN cd ui && make all && npm run build
 
 FROM alpine
 
@@ -21,8 +21,8 @@ RUN mkdir -p /bin/transverse/web/static
 
 COPY --from=build-go /go/src/github.com/Preetam/transverse/web/web /bin/transverse/web
 COPY --from=build-go /go/src/github.com/Preetam/transverse/metadata/metadata /bin/transverse/metadata
-COPY --from=build-node /web/static/ /bin/transverse/web/static/
-COPY --from=build-node /web/templates/ /bin/transverse/web/templates/
+COPY --from=build-go /go/src/github.com/Preetam/transverse/web/templates/ /bin/transverse/web/templates/
+COPY --from=build-ui /ui/static/ /bin/transverse/web/static/
 
 COPY entrypoint.sh /entrypoint.sh
 
