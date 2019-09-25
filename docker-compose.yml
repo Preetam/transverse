@@ -1,0 +1,17 @@
+version: "3"
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - 4001:4001
+    links:
+      - metadata
+    entrypoint: "/bin/transverse/web/web -dev-mode -addr 0.0.0.0:4001 -metadata-addr='http://metadata:4000/'"
+    working_dir: "/bin/transverse/web"
+  metadata:
+    build:
+      context: .
+    ports:
+      - 4000:4000
+    entrypoint: "/bin/transverse/metadata -listen 0.0.0.0:4000"

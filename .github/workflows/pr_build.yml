@@ -1,12 +1,12 @@
-name: Master build and deploy
+name: PR build
 
 on:
-  push:
+  pull_request:
     branches:
       - master
 
 jobs:
-  build:
+  buildAndPushImage:
     name: Build and Push Image
     runs-on: ubuntu-latest
     steps:
@@ -26,10 +26,3 @@ jobs:
         uses: actions/docker/cli@86ff551d26008267bb89ac11198ba7f1d807b699
         with:
           args: "push preetamjinka/transverse:$GITHUB_SHA"
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ./.github/actions/ansible
-      env:
-        VAULT_PASS: ${{ secrets.VAULT_PASS }}
