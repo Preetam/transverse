@@ -31,15 +31,15 @@ func NewForecaster() *Forecaster {
 }
 
 func (f *Forecaster) Forecast(data []float64) []forecast.ForecastPoint {
+	if len(data) > 60 {
+		data = data[len(data)-60 : len(data)]
+	}
+
 	result := []forecast.ForecastPoint{}
 
 	maxInitPoints := len(data)
 	if maxInitPoints > 3 && false {
 		maxInitPoints = 3
-	}
-
-	if len(data) > 60 {
-		data = data[len(data)-60 : len(data)]
 	}
 
 	// Find the best double exponential smoothing model.
