@@ -19,9 +19,10 @@ var m = require("mithril")
 var moment = require("moment")
 var parse = require("./parse")
 var Chart = require("./chart")
-var ChartState = require("./chartState")
+var ChartState = require("./chart_state")
 var Goal = require("./goals").Goal
 var Spinner = require("./spinner")
+var Icons = require("./icons")
 
 function getRelativeTimeString(d) {
   var now = new Date();
@@ -89,7 +90,7 @@ var GoalDetailsPage = {
     vnode.state.goal.error = "";
     Goal.get(vnode.state.goal).then(function() {
       vnode.state.goalAddDataPage = new GoalAddDataPage(vnode.state.goal);
-      return Goal.getData(vnode.state.goal)
+      return Goal.getData(vnode.state.goal);
     }).catch(function(e) {
       if (e.code === 404) {
         return;
@@ -118,7 +119,16 @@ var GoalDetailsPage = {
     if (!vnode.state.goal.data) {
       // No data
       return m("div", [
-        m("h1.tv-goal-title", vnode.state.goal.name),
+        m("h1.tv-goal-title", [
+          vnode.state.goal.name,
+          " ",
+          m("a", {
+            href: "#!/goals/"+vnode.state.goal.id+"/settings",
+            style: {
+              float: "right",
+              margin: "-3px 0",
+            }
+          }, m(Icons.cog))]),
         vnode.state.goal.updated > 0 ? m("div.tv-goal-updated", [
           "Updated ",
           m("strong", moment(""+vnode.state.goal.updated, "X").fromNow())
@@ -132,16 +142,21 @@ var GoalDetailsPage = {
         m("hr.tv-section-separator"),
         m("div.row", [
           m(vnode.state.goalAddDataPage)
-        ]),
-        m("hr.tv-section-separator"),
-        m("div.row", [
-          m(new GoalSettingsPage(vnode.state.goal))
         ])
       ])
     }
 
     return m("div", [
-      m("h1.tv-goal-title", vnode.state.goal.name),
+      m("h1.tv-goal-title", [
+        vnode.state.goal.name,
+        " ",
+        m("a", {
+          href: "#!/goals/"+vnode.state.goal.id+"/settings",
+          style: {
+            float: "right",
+            margin: "-3px 0",
+          }
+        }, m(Icons.cog))]),
       vnode.state.goal.updated > 0 ? m("div.tv-goal-updated", [
         "Updated ",
         m("strong", moment(""+vnode.state.goal.updated, "X").fromNow())
@@ -164,10 +179,6 @@ var GoalDetailsPage = {
       m("hr.tv-section-separator"),
       m("div.row", [
         m(vnode.state.goalAddDataPage)
-      ]),
-      m("hr.tv-section-separator"),
-      m("div.row", [
-        m(new GoalSettingsPage(vnode.state.goal))
       ])
     ])
   }
@@ -222,28 +233,28 @@ var AddOrSetForm = function(goal) {
 var GoalAddDataPage = function(goal) {
   this.oninit = function(vnode) {
     vnode.state.goal = goal;
-    Goal.getRawData(vnode.state.goal).catch(function(e) {
-      if (e.code === 404) {
-        return;
-      }
-      if (e.code) {
-        vnode.state.goal.error = "Status " + e.code + " " + e.message + "\n";
-        vnode.state.goal.error += e.message;
-        if (e.response) {
-          vnode.state.goal.error += e.response;
-        }
-      }
-    }).then(function() {
-      vnode.state.loaded = false;
-    })
     vnode.state.parsedEvents = [];
     vnode.state.submitError = "";
     vnode.state.parsedOK = true;
+    vnode.state.fieldContent = "";
+
+    Goal.getRawData(vnode.state.goal).then(function() {
+      if (vnode.state.goal.rawData) {
+        var series = vnode.state.goal.rawData.series;
+        for (var i in series) {
+          vnode.state.fieldContent += series[i].ts.toLocaleDateString('en-US') + ", " + series[i].value + "\n";
+        }
+      }
+      if (vnode.state.fieldContent != "") {
+        vnode.state.parsedEvents = parse.csv(vnode.state.fieldContent);
+      }
+    })
 
     vnode.state.addOrSetForm = new AddOrSetForm(vnode.state.goal);
   }
 
   this.view = function(vnode) {
+    console.log(vnode.state.goal.rawData)
     if (vnode.state.goal.error === "" && vnode.state.goal.user === "") {
       return m(Spinner)
     }
@@ -253,20 +264,7 @@ var GoalAddDataPage = function(goal) {
         m("p", vnode.state.submitError)
       ])
     }
-    var fieldContent = null;
-    if (vnode.state.loaded === false) {
-      fieldContent = "";
-      if (vnode.state.goal.rawData) {
-        var series = vnode.state.goal.rawData.series;
-        for (var i in series) {
-          fieldContent += series[i].ts.toLocaleDateString('en-US') + ", " + series[i].value + "\n";
-        }
-      }
-      if (fieldContent != "") {
-        vnode.state.parsedEvents = parse.csv(fieldContent);
-      }
-      vnode.state.loaded = true;
-    }
+
     var events = [];
     vnode.state.parsedEvents.forEach(function(e) {
       events.push(m("li", [
@@ -300,6 +298,7 @@ var GoalAddDataPage = function(goal) {
         m("h4", "Raw data input"),
         m("form.pure-form", m("textarea", {
           oninput: function() {
+            vnode.state.fieldContent = this.value;
             if (this.value.length > 0) {
               try {
                 vnode.state.parsedEvents = parse.csv(this.value);
@@ -315,102 +314,8 @@ var GoalAddDataPage = function(goal) {
             resize: "both",
             height: "170px"
           }
-        }, fieldContent)),
+        }, vnode.state.fieldContent)),
         finalComponents
-      ])
-    ])
-  }
-}
-
-// Settings
-
-var UpdateGoalForm = {
-  oninit: function(vnode) {
-    vnode.state.goal = vnode.attrs.goal;
-  },
-  view: function(vnode) {
-    return m("form", {
-      class: "pure-form pure-form-stacked",
-      onsubmit: function() {
-        vnode.attrs.update(vnode.state.goal);
-        return false;
-      }
-    },
-    m("fieldset", [
-      m("div.pure-control-group", [
-        m("label", {for: "form-goal-name"}, "Name"),
-        m("input#form-goal-name", {
-          class: "form-control",
-          onchange: function(ev) {vnode.state.goal.name = ev.target.value},
-          value: vnode.state.goal.name
-        }),
-        m("div#form-goal-name-help", {class: "pure-form-message-inline"}, "Give your goal a name.")
-      ]),
-      m("div.pure-control-group", [
-        m("label", {for: "form-goal-target"}, "Target"),
-        m("input#form-goal-target", {
-          class: "form-control",
-          onchange: function(ev) {vnode.state.goal.target = parseFloat(ev.target.value)},
-          value: vnode.state.goal.target
-        }),
-        m("div#form-goal-target-help", {class: "pure-form-message-inline"},
-          "Set a target value. This has to be a number. If you want to make it \"473 pages\", just put \"473\".")
-      ]),
-      m("button", {style: {marginTop: "10px"}, class: "pure-button"}, "Update goal")
-    ]))
-  }
-}
-
-var GoalSettingsPage = function(goal) {
-  this.oninit = function(vnode) {
-    vnode.state.goal = goal;
-    vnode.state.goalUpdateForm = m(UpdateGoalForm, {
-      goal: vnode.state.goal,
-      update: function(goal) {
-        Goal.update(goal).then(function() {location.reload()})
-      }
-    })
-  }
-
-  this.view = function(vnode) {
-    var archiveAction = (vnode.state.goal.archived ? "unarchive" : "archive");
-    var archiveActionButtonText = (vnode.state.goal.archived ? "Unarchive" : "Archive");
-    if (vnode.state.goal.error === "" && vnode.state.goal.user === "") {
-      return m(Spinner)
-    }
-    return m("div", [
-      m("div.col-sm-9", {style: "padding-top: 0.5rem;"}, [
-        m("h3.tv-goal-details-section-title", "Settings"),
-        m("div", {style: "margin-bottom: 1rem;"}, vnode.state.goalUpdateForm),
-        m("hr.tv-section-separator"),
-        m("form", {
-          class: "pure-form pure-form-stacked"
-        },
-        [
-          m("button", {
-            class: "pure-button tv-archive-button",
-            onclick: function(e) {
-              if (confirm("Are you sure you want to "+archiveAction+" this goal?")) {
-                if (!vnode.state.goal.archived) {
-                  Goal.archive(vnode.state.goal).then(function() {m.route.set("/goals/")})
-                } else {
-                  Goal.unarchive(vnode.state.goal).then(function() {m.route.set("/goals/")})
-                }
-              }
-              return false;
-            }
-          }, archiveActionButtonText+" this goal"),
-          " ",
-          m("button", {
-            class: "pure-button tv-delete-button",
-            onclick: function(e) {
-              if (confirm("Are you sure you want to delete this goal?")) {
-                Goal.delete(vnode.state.goal).then(function() {m.route.set("/goals/")})
-              }
-              return false;
-            }
-          }, "Delete this goal")
-        ])
       ])
     ])
   }

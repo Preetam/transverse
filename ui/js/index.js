@@ -17,9 +17,10 @@
 
 var m = require("mithril")
 var PrimaryNav = require("./primary-nav")
-var GoalsListPage = require("./goalsListPage")
-var GoalDetailsPage = require("./goalDetailsPage")
-var GoalAddPage = require("./goalAddPage")
+var GoalsListPage = require("./goals_list_page")
+var GoalDetailsPage = require("./goal_details_page")
+var GoalSettingsPage = require("./goal_settings_page")
+var GoalAddPage = require("./goal_add_page")
 var Profile = require("./profile")
 
 m.mount(document.querySelector("#primaryNav"), PrimaryNav);
@@ -28,5 +29,6 @@ m.route(document.getElementById("app"), "/goals", {
   "/goals": GoalsListPage,
   "/create-goal": GoalAddPage,
   "/goals/:id": GoalDetailsPage,
+  "/goals/:id/settings": GoalSettingsPage,
   "/profile": Profile.ProfilePage
 })

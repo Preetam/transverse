@@ -168,6 +168,14 @@ a {
   margin: 0 0 3px 0;
 }
 
+a.tv-settings-back-link {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 36px;
+  color: black;
+}
+
 hr.tv-section-separator {
   margin: 1rem auto;
   width: 50%;
