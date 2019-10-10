@@ -18,7 +18,9 @@ jobs:
       - name: Docker build
         run: "docker build -t preetamjinka/transverse:$GITHUB_SHA -t preetamjinka/transverse:latest ."
       - name: Push image to Docker Hub
-        run: "docker push preetamjinka/transverse:$GITHUB_SHA preetamjinka/transverse:latest"
+        run: "docker push preetamjinka/transverse:$GITHUB_SHA"
+      - name: Push image to Docker Hub
+        run: "docker push preetamjinka/transverse:latest"
   deploy:
     runs-on: ubuntu-latest
     needs: build
