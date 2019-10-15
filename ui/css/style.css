@@ -119,7 +119,7 @@ a {
 }
 
 .container {
-  padding: 16px 0;
+  padding: 16px;
 }
 
 .tv-page-title {
@@ -354,6 +354,10 @@ footer a {
   .app-container {
     width: 48em;
     margin: 0 auto;
+  }
+  
+  .container {
+    padding: 16px 0;
   }
 
   /* Hide hamburger menu icon */
