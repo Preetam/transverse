@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es6",
+    "esModuleInterop": true,
+    "typeRoots": ["./typings", "./node_modules/@types"],
+    "downlevelIteration": true,
+    "declaration": true,
+    "lib": ["es2019", "dom"],
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react"
+  },
+  "exclude": ["node_modules"],
+  "include": ["src/**/*"]
+}
