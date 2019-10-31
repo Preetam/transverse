@@ -1,4 +1,3 @@
-import restClient from '../../Helpers/RestClient';
+import * as goalServices from '../../Services/Goals';
 
-export const getGoals = (archived: boolean) =>
-  restClient.get(`/api/v1/goals?showArchived=${archived ? 'true' : 'false'}`);
+export default goalServices;
