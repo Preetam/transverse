@@ -19,3 +19,7 @@ interface IGoalData {
   prediction: Array<DataPoint>;
   eta: number;
 }
+
+interface ITranslation {
+  appName: string;
+}

@@ -6,5 +6,7 @@ interface Palette {
   warning: string;
   danger: string;
   text: string;
+  alternateText: string;
   background: string;
+  alternateBackground: string;
 }

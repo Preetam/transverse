@@ -1,23 +1,25 @@
 import restClient from '../Helpers/RestClient';
 
-const getormalizedDate = () => {
+const getNormalizedDate = () => {
   const now = new Date();
   return new Date(now.getTime() - now.getTimezoneOffset() * 60 * 1000);
 };
 
-export const getGoals = (archived: boolean): Promise<Array<IGoal>> =>
-  restClient.get(`/api/v1/goals?showArchived=${archived ? 'true' : 'false'}`);
+export const getGoals = (archived?: boolean): Promise<{ data: Array<IGoal> }> =>
+  restClient.get(
+    `/api/v1/goals?showArchived=${archived === true ? 'true' : 'false'}`
+  );
 
-export const getGoal = (goalId: string): Promise<IGoal> =>
+export const getGoal = (goalId: string): Promise<{ data: IGoal }> =>
   restClient.get(`/api/v1/goals?${goalId}`);
 
-export const getGoalData = (goalId: string): Promise<IGoalData> =>
+export const getGoalData = (goalId: string): Promise<{ data: IGoalData }> =>
   restClient.get(`/api/v1/goals?${goalId}/data`);
 
-export const getGoalETA = (goalId: string): Promise<IGoalData> =>
+export const getGoalETA = (goalId: string): Promise<{ data: IGoalData }> =>
   restClient.get(`/api/v1/goals?${goalId}/eta`);
 
-export const getGoalRawData = (goalId: string): Promise<IGoalData> =>
+export const getGoalRawData = (goalId: string): Promise<{ data: IGoalData }> =>
   restClient.get(`/api/v1/goals?${goalId}/raw-data`);
 
 export const addGoalData = (goalId: string, data: IGoalData) =>
@@ -26,13 +28,13 @@ export const addGoalData = (goalId: string, data: IGoalData) =>
 export const addGoalDataPoint = (goalId: string, value: number) =>
   restClient.post(`/api/v1/goals?${goalId}/data/single?add=true`, {
     value,
-    normalized: getormalizedDate()
+    normalized: getNormalizedDate()
   });
 
 export const addGoalDataSetPoint = (goalId: string, value: number) =>
   restClient.post(`/api/v1/goals?${goalId}/data/single?add=false`, {
     value,
-    normalized: getormalizedDate()
+    normalized: getNormalizedDate()
   });
 
 export const createGoal = (goal: IGoal) =>

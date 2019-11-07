@@ -1,8 +1,8 @@
 import React from 'react';
 import goalServices from './Services';
 
-import EmptyBox from '../../Components/Variants/EmptyBox';
-import LinkButton from '../../Components/Variants/LinkButton';
+import EmptyBox from '../../StyledComponents/Variants/Box';
+import LinkButton from '../../StyledComponents/Variants/LinkButton';
 
 const NoGoals = () => (
   <EmptyBox>
@@ -16,26 +16,29 @@ const NoGoals = () => (
 interface GoalListProps {}
 
 const GoalList = (props: GoalListProps) => {
-  const [goalsList, setGoalsList] = React.useState([]);
+  const [goalsList, setGoalsList] = React.useState<Array<IGoal>>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(false);
-  React.useEffect(async function {
-    try {
-      const { data } = await goalServices.getGoals();
-      setGoalsList(data);
-      setError(false);
-    } catch(ex) {
-      setError(true);
-      console.error(ex);
-    } finally {
-      setLoading(false);
-    }
+  React.useEffect(() => {
+    goalServices
+      .getGoals()
+      .then(({ data }: { data: Array<IGoal> }) => {
+        setGoalsList(data);
+        setError(false);
+      })
+      .catch((ex: Error) => {
+        setError(true);
+        console.error(ex);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
   return (
     <EmptyBox>
       {loading === false && goalsList.length === 0 && <NoGoals />}
-      {loading === false && error && ('invalid')}
-      {loading === true && ('loading')}
+      {loading === false && error && 'invalid'}
+      {loading === true && 'loading'}
       {loading === false && goalsList.length > 0}
     </EmptyBox>
   );

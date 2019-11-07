@@ -55,7 +55,6 @@ module.exports = {
           test: /[\\/]node_modules[\\/]/
         }
       },
-
       chunks: 'async',
       minChunks: 1,
       minSize: 30000,
