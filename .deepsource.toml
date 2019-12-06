@@ -1,6 +1,5 @@
 version = 1
 
 [[analyzers]]
-name = "python"
+name = "go"
 enabled = true
-runtime_version = "3.x.x"
