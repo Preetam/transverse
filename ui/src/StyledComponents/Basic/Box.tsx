@@ -1,23 +1,26 @@
 import styled from 'styled-components';
+import {
+  space,
+  layout,
+  flexbox,
+  SpaceProps,
+  FlexboxProps,
+  LayoutProps,
+} from 'styled-system';
+
+import { backgroundColor, color } from './Utils';
 
 interface BoxProps {
-  flex?: number;
   alternate?: boolean;
-  flexBasis?: string;
-  flexGrow?: string;
 }
 
-const Box = styled.div<BoxProps>`
+const Box = styled.div<BoxProps & SpaceProps & FlexboxProps & LayoutProps>`
+  ${space}
+  ${layout}
+  ${flexbox}
   display: flex;
-  flex-direction: column;
-  flex: ${props => props.flex ?? 'unset'};
-  flex-grow: ${props => props.flexGrow ?? 'unset'};
-  flex-basis: ${props => props.flexBasis ?? 'unset'};
-  background-color: ${props =>
-    props.alternate === true
-      ? props.theme.alternateBackground
-      : props.theme.background};
-  color: ${props => props.theme.text};
+  background-color: ${backgroundColor};
+  color: ${color};
 `;
 
 export default Box;

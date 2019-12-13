@@ -9,7 +9,7 @@
     "moduleResolution": "node",
     "target": "es6",
     "esModuleInterop": true,
-    "typeRoots": ["./typings", "./node_modules/@types"],
+    "typeRoots": ["./typings", "./node_modules/@types", "./src/**/*.d.ts"],
     "downlevelIteration": true,
     "declaration": true,
     "lib": ["es2019", "dom"],

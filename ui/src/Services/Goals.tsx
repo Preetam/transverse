@@ -28,13 +28,13 @@ export const addGoalData = (goalId: string, data: IGoalData) =>
 export const addGoalDataPoint = (goalId: string, value: number) =>
   restClient.post(`/api/v1/goals?${goalId}/data/single?add=true`, {
     value,
-    normalized: getNormalizedDate()
+    normalized: getNormalizedDate(),
   });
 
 export const addGoalDataSetPoint = (goalId: string, value: number) =>
   restClient.post(`/api/v1/goals?${goalId}/data/single?add=false`, {
     value,
-    normalized: getNormalizedDate()
+    normalized: getNormalizedDate(),
   });
 
 export const createGoal = (goal: IGoal) =>

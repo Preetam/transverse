@@ -3,11 +3,12 @@ import goalServices from './Services';
 
 import EmptyBox from '../../StyledComponents/Variants/Box';
 import LinkButton from '../../StyledComponents/Variants/LinkButton';
+import { H1 } from '../../StyledComponents/Basic/Header';
 
 const NoGoals = () => (
   <EmptyBox>
     <p>You haven’t added any goals yet.</p>
-    <LinkButton href='/create-goal' to='/create-goal'>
+    <LinkButton href="/create-goal" to="/create-goal">
       Add a Goal
     </LinkButton>
   </EmptyBox>
@@ -35,11 +36,15 @@ const GoalList = (props: GoalListProps) => {
       });
   }, []);
   return (
-    <EmptyBox>
-      {loading === false && goalsList.length === 0 && <NoGoals />}
-      {loading === false && error && 'invalid'}
-      {loading === true && 'loading'}
-      {loading === false && goalsList.length > 0}
+    <EmptyBox flexDirection="column">
+      <EmptyBox>
+        <H1>Goals</H1>
+      </EmptyBox>
+      <EmptyBox flexDirection="column">
+        {loading === false && goalsList.length === 0 && <NoGoals />}
+        {loading === true && 'loading'}
+        {loading === false && goalsList.length > 0}
+      </EmptyBox>
     </EmptyBox>
   );
 };

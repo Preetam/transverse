@@ -1,5 +1,5 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -14,7 +14,7 @@ const webpack = require('webpack');
  *
  */
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 /*
  * We've enabled HtmlWebpackPlugin for you! This generates a html
@@ -26,48 +26,60 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
  */
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.tsx',
+    mode: 'development',
+    entry: './src/index.tsx',
 
-  output: {
-    filename: '[name].[chunkhash].js',
-    path: path.resolve(__dirname, 'dist')
-  },
+    output: {
+        filename: '[name].[chunkhash].js',
+        path: path.resolve(__dirname, 'dist'),
+    },
 
-  plugins: [new webpack.ProgressPlugin(), new HtmlWebpackPlugin()],
+    plugins: [new webpack.ProgressPlugin(), new HtmlWebpackPlugin()],
 
-  module: {
-    rules: [
-      {
-        test: /.(ts|tsx)?$/,
-        loader: 'ts-loader',
-        include: [path.resolve(__dirname, 'src')],
-        exclude: [/node_modules/]
-      }
-    ]
-  },
+    module: {
+        rules: [
+            {
+                test: /.(ts|tsx)?$/,
+                loader: 'ts-loader',
+                include: [path.resolve(__dirname, 'src')],
+                exclude: [/node_modules/],
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'fonts/',
+                        },
+                    },
+                ],
+            },
+        ],
+    },
 
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          priority: -10,
-          test: /[\\/]node_modules[\\/]/
-        }
-      },
-      chunks: 'async',
-      minChunks: 1,
-      minSize: 30000,
-      name: true
-    }
-  },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendors: {
+                    priority: -10,
+                    test: /[\\/]node_modules[\\/]/,
+                },
+            },
+            chunks: 'async',
+            minChunks: 1,
+            minSize: 30000,
+            name: true,
+        },
+    },
 
-  devServer: {
-    open: true,
-    historyApiFallback: true
-  },
+    devServer: {
+        open: true,
+        historyApiFallback: true,
+    },
 
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js']
-  }
-};
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
+    },
+}

@@ -1,38 +1,55 @@
 import styled from 'styled-components';
+import {
+  space,
+  layout,
+  flexbox,
+  SpaceProps,
+  FlexboxProps,
+  LayoutProps,
+} from 'styled-system';
+
+import { backgroundColor, color } from './Utils';
 
 interface HeaderProps {
-  flex?: number;
   alternate?: boolean;
+  theme: Styles;
 }
 
-export const Header = styled.header<HeaderProps>`
-  padding: 10px;
-  color: ${props =>
-    props.alternate ? props.theme.alternateText : props.theme.text};
+type Props = HeaderProps & FlexboxProps & LayoutProps & SpaceProps;
+
+export const Header = styled.header<Props>`
+  background-color: ${backgroundColor};
+  color: ${color};
+  ${space};
+  ${layout};
 `;
 
-export const H1 = styled.h1<HeaderProps>`
-  padding: 10px;
-  color: ${props =>
-    props.alternate ? props.theme.alternateText : props.theme.text};
+export const H1 = styled.h1<Props>`
+  background-color: ${backgroundColor};
+  color: ${color};
+  ${space};
+  ${layout};
 `;
 
-export const H2 = styled.h2<HeaderProps>`
-  padding: 10px;
-  color: ${props =>
-    props.alternate ? props.theme.alternateText : props.theme.text};
+export const H2 = styled.h2<Props>`
+  ${space};
+  ${layout};
+  background-color: ${backgroundColor};
+  color: ${color};
 `;
 
-export const H3 = styled.h3<HeaderProps>`
-  padding: 10px;
-  color: ${props =>
-    props.alternate ? props.theme.alternateText : props.theme.text};
+export const H3 = styled.h3<Props>`
+  ${space};
+  ${layout};
+  background-color: ${backgroundColor};
+  color: ${color};
 `;
 
-export const H4 = styled.h4<HeaderProps>`
-  padding: 10px;
-  color: ${props =>
-    props.alternate ? props.theme.alternateText : props.theme.text};
+export const H4 = styled.h4<Props>`
+  ${space};
+  ${layout};
+  background-color: ${backgroundColor};
+  color: ${color};
 `;
 
 export default Header;

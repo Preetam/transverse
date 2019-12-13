@@ -10,3 +10,10 @@ interface Palette {
   background: string;
   alternateBackground: string;
 }
+
+interface Layout {
+  namedFontSize: (size?: string) => string;
+  namedSpacing: (size?: string) => string;
+}
+
+type Styles = Layout & Palette;

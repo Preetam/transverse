@@ -5,10 +5,16 @@ import {
   Switch,
   Route,
   Link,
-  Redirect
+  Redirect,
 } from 'react-router-dom';
 
-import { ChronicaProFontStyles, dark, light } from './Styles';
+import {
+  ChronicaProFontStyles,
+  dark,
+  light,
+  namedFontSize,
+  namedSpacing,
+} from './Styles';
 
 import CreateGoal from './Containers/CreateGoal';
 import GoalList from './Containers/GoalList';
@@ -25,29 +31,29 @@ export default function App() {
     theme = dark;
   }
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={{ ...theme, namedFontSize, namedSpacing }}>
       <Translations.Provider value={enUs}>
         <Router>
           <ChronicaProFontStyles />
           <Navbar />
           <Switch>
-            <Route path='/goals'>
+            <Route path="/goals">
               <GoalList />
             </Route>
-            <Route path='/create-goal'>
+            <Route path="/create-goal">
               <CreateGoal />
             </Route>
-            <Route path='/goals/:id'>
+            <Route path="/goals/:id">
               <GoalDetail />
             </Route>
-            <Route path='/goals/:id/settings'>
+            <Route path="/goals/:id/settings">
               <GoalPreferences />
             </Route>
-            <Route path='/profile'>
+            <Route path="/profile">
               <Profile />
             </Route>
-            <Route path='*'>
-              <Redirect to='/goals' />
+            <Route path="*">
+              <Redirect to="/goals" />
             </Route>
           </Switch>
         </Router>

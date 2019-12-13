@@ -9,7 +9,9 @@ const Navbar = (props: NavbarProps) => {
   const translations = React.useContext(Translations);
   return (
     <Row alternate>
-      <H2 alternate>{translations.appName}</H2>
+      <H2 alternate pl="10px">
+        {translations.appName}
+      </H2>
     </Row>
   );
 };
