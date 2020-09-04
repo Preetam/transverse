@@ -14,7 +14,7 @@
     "d3": "^5.9.0",
     "mithril": "^2.0.4",
     "moment": "^2.24.0",
-    "papaparse": "^4.6.3"
+    "papaparse": "^5.2.0"
   },
   "devDependencies": {
     "webpack": "^4.29.3",
