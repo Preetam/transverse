@@ -13,7 +13,7 @@
   "dependencies": {
     "d3": "^5.9.0",
     "mithril": "^2.0.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "papaparse": "^4.6.3"
   },
   "devDependencies": {
